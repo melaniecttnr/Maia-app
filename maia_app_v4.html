@@ -1,0 +1,431 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0;}
+  #maia{font-family:'Inter',sans-serif;background:#fff8f1;min-height:600px;max-width:420px;margin:0 auto;position:relative;overflow:hidden;color:#211b0b;}
+  .page{animation:fadeUp .28s ease;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .scroll{height:582px;overflow-y:auto;padding-bottom:84px;scrollbar-width:none;}
+  .scroll::-webkit-scrollbar{display:none;}
+  .serif{font-family:'Noto Serif',serif;}
+  .lxs{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#544248;font-weight:500;}
+  .nav{position:absolute;bottom:0;left:0;right:0;z-index:50;display:flex;justify-content:space-around;align-items:center;padding:10px 8px 14px;background:rgba(238,225,200,.93);backdrop-filter:blur(20px);border-radius:24px 24px 0 0;box-shadow:0 -4px 24px rgba(33,27,11,.07);}
+  .nb{display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 16px;border-radius:12px;border:none;cursor:pointer;background:transparent;color:#867278;font-family:'Inter';font-size:10px;letter-spacing:.06em;text-transform:uppercase;font-weight:500;transition:all .2s;}
+  .nb.on{background:#5B0533;color:#fff;}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:15px 26px;border-radius:100px;border:none;cursor:pointer;font-family:'Inter';font-size:14px;font-weight:500;transition:opacity .18s,transform .15s;line-height:1;}
+  .btn:active{transform:scale(.97);}
+  .btn:disabled{opacity:.38;cursor:not-allowed;transform:none;}
+  .bp{background:linear-gradient(140deg,#38001c,#5B0533);color:#fff;box-shadow:0 8px 24px rgba(56,0,28,.18);}
+  .bp:not(:disabled):hover{opacity:.9;}
+  .bs{background:#eee1c8;color:#5B0533;}
+  .bs:hover{background:#e5d9bf;}
+  .bfw{width:100%;}
+  .card{background:#fff;border-radius:16px;padding:18px;box-shadow:0 3px 18px rgba(33,27,11,.055);}
+  .pt{height:5px;background:#eee1c8;border-radius:99px;overflow:hidden;}
+  .pf{height:100%;background:linear-gradient(90deg,#5B0533,#9b3d66);border-radius:99px;transition:width .5s ease;}
+  .inp{width:100%;padding:0 0 13px;border:none;border-bottom:1.5px solid rgba(217,192,199,.25);background:transparent;font-family:'Noto Serif',serif;font-style:italic;font-size:22px;color:#211b0b;outline:none;transition:border-color .2s;}
+  .inp::placeholder{color:rgba(33,27,11,.2);}
+  .inp:focus{border-bottom-color:#5B0533;}
+  .is{font-family:'Inter',sans-serif;font-style:normal;font-size:15px;padding:12px 14px;border-radius:12px;border:1.5px solid rgba(217,192,199,.3)!important;background:#fff;outline:none;width:100%;}
+  .is:focus{border-color:#5B0533!important;}
+  textarea.is{resize:none;line-height:1.65;}
+  input[type=range]{width:100%;accent-color:#5B0533;margin:4px 0;}
+  .bd{position:absolute;inset:0;background:rgba(33,27,11,.48);z-index:100;display:flex;align-items:flex-end;}
+  .sh{background:#fff8f1;border-radius:24px 24px 0 0;padding:26px 22px 36px;width:100%;max-height:82%;overflow-y:auto;animation:su .3s ease;}
+  @keyframes su{from{transform:translateY(100%)}to{transform:none}}
+  .pill{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:99px;font-size:11px;}
+  .ph{background:#f4e7cd;color:#544248;}
+  .pd{background:#d4edda;color:#205027;}
+  .tag{background:#fec1d5;color:#7a4c5d;padding:4px 10px;border-radius:99px;font-size:11px;cursor:pointer;display:inline-block;}
+  .si{display:flex;align-items:center;gap:10px;width:100%;padding:14px 16px;border-radius:13px;border:2px solid transparent;background:#fff;cursor:pointer;text-align:left;font-family:'Inter';transition:all .18s;}
+  .si.on{border-color:#5B0533;background:rgba(91,5,51,.07);}
+  .si:hover:not(.on){background:#f4e7cd;}
+  .dg{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .di{display:flex;align-items:center;gap:8px;padding:12px 11px;border-radius:12px;border:2px solid transparent;background:#fff;cursor:pointer;font-family:'Inter';font-size:12px;color:#211b0b;transition:all .18s;}
+  .di.on{border-color:#5B0533;background:rgba(91,5,51,.07);color:#5B0533;font-weight:600;}
+  .md{font-size:22px;padding:6px 7px;background:transparent;border:2px solid transparent;border-radius:10px;cursor:pointer;transition:all .15s;}
+  .md.on{border-color:#5B0533;background:rgba(91,5,51,.08);}
+  .vc{border-radius:16px;padding:18px 15px;display:flex;flex-direction:column;justify-content:space-between;min-height:120px;position:relative;overflow:hidden;}
+  .ft{padding:7px 14px;border-radius:99px;border:none;cursor:pointer;font-family:'Inter';font-size:12px;white-space:nowrap;transition:all .18s;background:#f4e7cd;color:#544248;}
+  .ft.on{background:#5B0533;color:#fff;font-weight:600;}
+  .dots{display:inline-flex;gap:3px;align-items:center;}
+  .dots span{width:5px;height:5px;border-radius:50%;background:currentColor;animation:dot 1.1s ease-in-out infinite;display:inline-block;}
+  .dots span:nth-child(2){animation-delay:.18s}.dots span:nth-child(3){animation-delay:.36s}
+  @keyframes dot{0%,80%,100%{transform:scale(.55);opacity:.4}40%{transform:scale(1);opacity:1}}
+  .ico{display:inline-block;vertical-align:middle;flex-shrink:0;}
+</style>
+
+<div id="maia"></div>
+
+<script>
+// ── MAÏA SVG LOGO ─────────────────────────────────────────────────────────────
+// Extracted from official SVG: 4 letter paths with their transforms
+// viewBox computed from actual path bounds: x=245 y=507 w=1013 h=378
+const LOGO_PATHS = [
+  // M — translate(229.0, 882.6)
+  { tx: 229.0, ty: 882.6, d: "M 384.203125 -375.125 L 434.96875 -375.125 L 434.96875 -370.3125 C 433.539062 -370.3125 431.132812 -367.90625 427.75 -363.09375 C 424.363281 -358.289062 422.671875 -346.984375 422.671875 -329.171875 L 422.671875 -45.953125 C 422.671875 -28.492188 424.363281 -17.269531 427.75 -12.28125 C 431.132812 -7.300781 433.539062 -4.8125 434.96875 -4.8125 L 434.96875 0 L 371.921875 0 L 371.921875 -4.8125 C 373.703125 -4.8125 376.191406 -7.300781 379.390625 -12.28125 C 382.597656 -17.269531 384.203125 -28.492188 384.203125 -45.953125 L 384.203125 -363.90625 L 223.890625 -31.53125 L 238.859375 0 L 196.640625 0 L 41.140625 -323.28125 L 41.140625 -87.640625 C 41.140625 -62.703125 43.546875 -42.660156 48.359375 -27.515625 C 53.171875 -12.378906 57.535156 -4.8125 61.453125 -4.8125 L 61.453125 0 L 16.03125 0 L 16.03125 -4.8125 C 19.945312 -4.8125 24.3125 -12.378906 29.125 -27.515625 C 33.9375 -42.660156 36.34375 -62.703125 36.34375 -87.640625 L 36.34375 -332.90625 L 16.03125 -375.125 L 58.25 -375.125 L 221.21875 -36.875 Z M 384.203125 -375.125" },
+  // a — translate(666.6, 882.6)
+  { tx: 666.6, ty: 882.6, d: "M 257.5625 -4.8125 L 257.5625 0 L 208.40625 0 L 208.40625 -153.890625 C 208.40625 -163.515625 207.957031 -174.113281 207.0625 -185.6875 C 206.175781 -197.269531 203.953125 -208.40625 200.390625 -219.09375 C 196.828125 -229.78125 191.390625 -238.503906 184.078125 -245.265625 C 176.773438 -252.035156 166.710938 -255.421875 153.890625 -255.421875 C 136.796875 -255.421875 122.722656 -252.390625 111.671875 -246.328125 C 100.628906 -240.273438 93.0625 -233.6875 88.96875 -226.5625 C 84.875 -219.4375 84.429688 -213.914062 87.640625 -210 C 90.835938 -206.4375 97.066406 -204.390625 106.328125 -203.859375 C 115.597656 -203.328125 124.6875 -201.28125 133.59375 -197.71875 C 145.34375 -193.082031 154.691406 -185.773438 161.640625 -175.796875 C 168.585938 -165.828125 173.484375 -154.429688 176.328125 -141.609375 C 179.179688 -128.785156 180.25 -115.957031 179.53125 -103.125 C 178.820312 -90.300781 176.332031 -78.722656 172.0625 -68.390625 C 164.226562 -47.734375 152.207031 -30.632812 136 -17.09375 C 119.789062 -3.5625 102.242188 2.847656 83.359375 2.140625 C 65.546875 1.421875 51.117188 -3.390625 40.078125 -12.296875 C 29.035156 -21.203125 21.460938 -32.507812 17.359375 -46.21875 C 13.265625 -59.9375 12.820312 -74.363281 16.03125 -89.5 C 19.238281 -104.644531 26.097656 -119.070312 36.609375 -132.78125 C 47.117188 -146.5 61.546875 -157.898438 79.890625 -166.984375 C 98.234375 -176.066406 120.585938 -181.144531 146.953125 -182.21875 C 147.660156 -182.570312 148.90625 -182.75 150.6875 -182.75 C 145.34375 -187.382812 139.109375 -191.125 131.984375 -193.96875 C 123.796875 -197.53125 114.625 -199.398438 104.46875 -199.578125 C 94.3125 -199.753906 85.3125 -199.394531 77.46875 -198.5 C 69.632812 -197.613281 64.648438 -196.816406 62.515625 -196.109375 C 61.453125 -203.585938 64.570312 -212.222656 71.875 -222.015625 C 79.175781 -231.816406 89.863281 -240.457031 103.9375 -247.9375 C 118.007812 -255.425781 134.660156 -259.171875 153.890625 -259.171875 C 177.046875 -259.171875 195.210938 -254.625 208.390625 -245.53125 C 221.578125 -236.445312 231.019531 -223.976562 236.71875 -208.125 C 242.414062 -192.28125 245.265625 -174.203125 245.265625 -153.890625 L 245.265625 -45.953125 C 245.265625 -28.492188 246.957031 -17.269531 250.34375 -12.28125 C 253.726562 -7.300781 256.132812 -4.8125 257.5625 -4.8125 Z M 154.4375 -178.46875 C 135.550781 -178.46875 118.179688 -175.171875 102.328125 -168.578125 C 86.472656 -161.992188 73.828125 -152.109375 64.390625 -138.921875 C 54.953125 -125.742188 50.234375 -108.828125 50.234375 -88.171875 C 50.234375 -78.191406 51.742188 -68.300781 54.765625 -58.5 C 57.796875 -48.707031 62.695312 -40.25 69.46875 -33.125 C 76.238281 -26 84.96875 -21.367188 95.65625 -19.234375 C 107.050781 -17.097656 117.554688 -18.34375 127.171875 -22.96875 C 136.796875 -27.601562 145.171875 -34.101562 152.296875 -42.46875 C 159.421875 -50.84375 164.941406 -59.84375 168.859375 -69.46875 C 173.484375 -80.863281 176.0625 -93.238281 176.59375 -106.59375 C 177.132812 -119.957031 175.625 -132.960938 172.0625 -145.609375 C 168.5 -158.253906 162.625 -169.207031 154.4375 -178.46875 Z M 154.4375 -178.46875" },
+  // ï — translate(924.1, 882.6)
+  { tx: 924.1, ty: 882.6, d: "M 14.96875 -234.046875 L 13.359375 -238.328125 L 63.59375 -257.5625 L 63.59375 -45.953125 C 63.59375 -28.492188 65.28125 -17.269531 68.65625 -12.28125 C 72.039062 -7.300781 74.445312 -4.8125 75.875 -4.8125 L 75.875 0 L 13.890625 0 L 13.890625 -4.8125 C 15.671875 -4.8125 18.253906 -7.300781 21.640625 -12.28125 C 25.023438 -17.269531 26.71875 -28.492188 26.71875 -45.953125 L 26.71875 -211.078125 C 25.289062 -220.691406 23.328125 -226.921875 20.828125 -229.765625 C 18.335938 -232.617188 16.382812 -234.046875 14.96875 -234.046875 Z M -8.015625 -374.046875 C -1.242188 -374.046875 4.453125 -371.726562 9.078125 -367.09375 C 13.710938 -362.46875 16.03125 -356.953125 16.03125 -350.546875 C 16.03125 -344.128906 13.710938 -338.691406 9.078125 -334.234375 C 4.453125 -329.785156 -1.242188 -327.5625 -8.015625 -327.5625 C -14.429688 -327.5625 -20.039062 -329.785156 -24.84375 -334.234375 C -29.65625 -338.691406 -32.0625 -344.128906 -32.0625 -350.546875 C -32.0625 -356.953125 -29.65625 -362.46875 -24.84375 -367.09375 C -20.039062 -371.726562 -14.429688 -374.046875 -8.015625 -374.046875 Z M 97.78125 -374.046875 C 104.550781 -374.046875 110.25 -371.726562 114.875 -367.09375 C 119.507812 -362.46875 121.828125 -356.953125 121.828125 -350.546875 C 121.828125 -344.128906 119.507812 -338.691406 114.875 -334.234375 C 110.25 -329.785156 104.550781 -327.5625 97.78125 -327.5625 C 91.375 -327.5625 85.765625 -329.785156 80.953125 -334.234375 C 76.140625 -338.691406 73.734375 -344.128906 73.734375 -350.546875 C 73.734375 -356.953125 76.140625 -362.46875 80.953125 -367.09375 C 85.765625 -371.726562 91.375 -374.046875 97.78125 -374.046875 Z M 97.78125 -374.046875" },
+  // a — translate(1000.0, 882.6)
+  { tx: 1000.0, ty: 882.6, d: "M 257.5625 -4.8125 L 257.5625 0 L 208.40625 0 L 208.40625 -153.890625 C 208.40625 -163.515625 207.957031 -174.113281 207.0625 -185.6875 C 206.175781 -197.269531 203.953125 -208.40625 200.390625 -219.09375 C 196.828125 -229.78125 191.390625 -238.503906 184.078125 -245.265625 C 176.773438 -252.035156 166.710938 -255.421875 153.890625 -255.421875 C 136.796875 -255.421875 122.722656 -252.390625 111.671875 -246.328125 C 100.628906 -240.273438 93.0625 -233.6875 88.96875 -226.5625 C 84.875 -219.4375 84.429688 -213.914062 87.640625 -210 C 90.835938 -206.4375 97.066406 -204.390625 106.328125 -203.859375 C 115.597656 -203.328125 124.6875 -201.28125 133.59375 -197.71875 C 145.34375 -193.082031 154.691406 -185.773438 161.640625 -175.796875 C 168.585938 -165.828125 173.484375 -154.429688 176.328125 -141.609375 C 179.179688 -128.785156 180.25 -115.957031 179.53125 -103.125 C 178.820312 -90.300781 176.332031 -78.722656 172.0625 -68.390625 C 164.226562 -47.734375 152.207031 -30.632812 136 -17.09375 C 119.789062 -3.5625 102.242188 2.847656 83.359375 2.140625 C 65.546875 1.421875 51.117188 -3.390625 40.078125 -12.296875 C 29.035156 -21.203125 21.460938 -32.507812 17.359375 -46.21875 C 13.265625 -59.9375 12.820312 -74.363281 16.03125 -89.5 C 19.238281 -104.644531 26.097656 -119.070312 36.609375 -132.78125 C 47.117188 -146.5 61.546875 -157.898438 79.890625 -166.984375 C 98.234375 -176.066406 120.585938 -181.144531 146.953125 -182.21875 C 147.660156 -182.570312 148.90625 -182.75 150.6875 -182.75 C 145.34375 -187.382812 139.109375 -191.125 131.984375 -193.96875 C 123.796875 -197.53125 114.625 -199.398438 104.46875 -199.578125 C 94.3125 -199.753906 85.3125 -199.394531 77.46875 -198.5 C 69.632812 -197.613281 64.648438 -196.816406 62.515625 -196.109375 C 61.453125 -203.585938 64.570312 -212.222656 71.875 -222.015625 C 79.175781 -231.816406 89.863281 -240.457031 103.9375 -247.9375 C 118.007812 -255.425781 134.660156 -259.171875 153.890625 -259.171875 C 177.046875 -259.171875 195.210938 -254.625 208.390625 -245.53125 C 221.578125 -236.445312 231.019531 -223.976562 236.71875 -208.125 C 242.414062 -192.28125 245.265625 -174.203125 245.265625 -153.890625 L 245.265625 -45.953125 C 245.265625 -28.492188 246.957031 -17.269531 250.34375 -12.28125 C 253.726562 -7.300781 256.132812 -4.8125 257.5625 -4.8125 Z M 154.4375 -178.46875 C 135.550781 -178.46875 118.179688 -175.171875 102.328125 -168.578125 C 86.472656 -161.992188 73.828125 -152.109375 64.390625 -138.921875 C 54.953125 -125.742188 50.234375 -108.828125 50.234375 -88.171875 C 50.234375 -78.191406 51.742188 -68.300781 54.765625 -58.5 C 57.796875 -48.707031 62.695312 -40.25 69.46875 -33.125 C 76.238281 -26 84.96875 -21.367188 95.65625 -19.234375 C 107.050781 -17.097656 117.554688 -18.34375 127.171875 -22.96875 C 136.796875 -27.601562 145.171875 -34.101562 152.296875 -42.46875 C 159.421875 -50.84375 164.941406 -59.84375 168.859375 -69.46875 C 173.484375 -80.863281 176.0625 -93.238281 176.59375 -106.59375 C 177.132812 -119.957031 175.625 -132.960938 172.0625 -145.609375 C 168.5 -158.253906 162.625 -169.207031 154.4375 -178.46875 Z M 154.4375 -178.46875" },
+];
+
+function logoSVG(color, height) {
+  const h = height || 32;
+  const aspect = 1013 / 378;
+  const w = Math.round(h * aspect);
+  // Each path needs its full transform applied: translate(tx, ty)
+  const pathsHTML = LOGO_PATHS.map(p =>
+    `<path transform="translate(${p.tx},${p.ty})" d="${p.d}" fill="${color}"/>`
+  ).join('');
+  return `<svg width="${w}" height="${h}" viewBox="245 507 1013 378" xmlns="http://www.w3.org/2000/svg" style="display:block;flex-shrink:0;">${pathsHTML}</svg>`;
+}
+
+// ── ICONS ─────────────────────────────────────────────────────────────────────
+const I={
+  home:`<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>`,
+  vision:`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`,
+  visionF:`<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>`,
+  goals:`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`,
+  goalsF:`<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm0-12c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>`,
+  journal:`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`,
+  journalF:`<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3.18C14.4.84 13.3 0 12 0c-1.3 0-2.4.84-2.82 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-6 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm0 4c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm6 12H6v-1.4c0-2 4-3.1 6-3.1s6 1.1 6 3.1V18z"/></svg>`,
+  add:`<svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>`,
+  check:`<svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>`,
+  spark:`<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>`,
+  edit:`<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm17.71-10.21a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>`,
+  trash:`<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>`,
+  close:`<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>`,
+  refresh:`<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>`,
+  chkc:`<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>`,
+  addc:`<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>`,
+  pen:`<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm2.92 1.83H5v-.71l9.06-9.06.72.72-8.86 9.05zm15.86-11.92-.79.79-3.75-3.75.79-.79c.39-.39 1.02-.39 1.41 0l2.34 2.34c.39.39.39 1.02 0 1.41z"/></svg>`,
+  photo:`<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M21 3H3C2 3 1 4 1 5v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zM5 7h14v10H5z"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="m5 17 4-4 2.5 3 2.5-2.5L19 17z"/></svg>`,
+};
+const DI={
+  carriere:`<svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>`,
+  sante:`<svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z"/></svg>`,
+  relation:`<svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>`,
+  voyage:`<svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M21 3L3 10.53v.98l6.84 2.65L12.48 21h.98L21 3z"/></svg>`,
+  finance:`<svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>`,
+  creation:`<svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9 8 9.67 8 10.5 7.33 12 6.5 12zm3-4C8.67 8 8 7.33 8 6.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 9 17.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>`,
+  perso:`<svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>`,
+  famille:`<svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>`,
+};
+const HI={
+  court:`<svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M13.49 5.48c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-3.6 13.9l1-4.4 2.1 2v6h2v-7.5l-2.1-2 .6-3c1.3 1.5 3.3 2.5 5.5 2.5v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1l-5.2 2.2v4.7h2v-3.4l1.8-.7-1.6 8.1-4.9-1-.4 2 7 1.4z"/></svg>`,
+  moyen:`<svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M13.49 5.48c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-3.6 13.9l1-4.4 2.1 2v6h2v-7.5l-2.1-2 .6-3c1.3 1.5 3.3 2.5 5.5 2.5v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1l-5.2 2.2v4.7h2v-3.4l1.8-.7-1.6 8.1-4.9-1-.4 2 7 1.4z"/></svg>`,
+  long:`<svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M14 6l-1-2H5v17h2v-7h5l1 2h7V6h-6zm4 8h-4l-1-2H7V6h5l1 2h5v6z"/></svg>`,
+};
+const THEMES=[
+  {k:'rose',bg:'linear-gradient(135deg,#fec1d5,#f2b6ca)',tc:'#38001c'},
+  {k:'bordeaux',bg:'linear-gradient(135deg,#5B0533,#9b3d66)',tc:'#fff'},
+  {k:'nature',bg:'linear-gradient(135deg,#d4edda,#9ed49e)',tc:'#00350f'},
+  {k:'lumiere',bg:'linear-gradient(135deg,#fff2da,#fec1d5)',tc:'#38001c'},
+  {k:'ciel',bg:'linear-gradient(135deg,#c5e3ef,#a8d0e6)',tc:'#00254d'},
+];
+const DOMAINS=[
+  {k:'carriere',l:'Carrière',c:'#5B0533'},{k:'sante',l:'Santé',c:'#6da06e'},
+  {k:'relation',l:'Amour',c:'#dc719c'},{k:'voyage',l:'Voyages',c:'#9b3d66'},
+  {k:'finance',l:'Finances',c:'#7f5162'},{k:'creation',l:'Créativité',c:'#5B0533'},
+  {k:'perso',l:'Personnel',c:'#38001c'},{k:'famille',l:'Famille',c:'#544248'},
+];
+const HORIZONS=[
+  {k:'court',l:'3 mois',sub:'Cycles courts'},
+  {k:'moyen',l:'6 mois',sub:'Équilibre idéal'},
+  {k:'long',l:'1 an',sub:'Transformation'},
+];
+const MOODS=['✨','💪','🌸','😊','🔥','💭','🌙','💎'];
+
+let S={user:null,visionCards:[],goals:[],journal:[],motivation:null,page:'home',step:0,ob:{prenom:'',age:'',domains:[],horizon:''},sheet:null,sd:{},filterH:'all',loading:{}};
+function set(p){S={...S,...p};draw();}
+function setL(k,v){S.loading={...S.loading,[k]:v};draw();}
+
+async function ai(sys,usr,max=600){
+  const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:max,system:sys,messages:[{role:'user',content:usr}]})});
+  const d=await r.json();return d.content?.[0]?.text||'';
+}
+async function getMotiv(){
+  if(S.loading.m)return;setL('m',true);
+  try{const t=await ai('Tu es Maïa. Génère une pensée du jour (2 phrases max), poétique, en français. Aucun guillemet, aucun hashtag.',`Pour ${S.user.prenom}, domaines: ${S.user.domains.map(k=>DOMAINS.find(d=>d.k===k)?.l).join(', ')}. Horizon: ${HORIZONS.find(h=>h.k===S.user.horizon)?.l}.`);set({motivation:t.trim()});}
+  catch{set({motivation:'Chaque journée porte en elle la promesse d\'un nouveau commencement.'});}
+  finally{setL('m',false);}
+}
+async function aiDesc(title){
+  if(!title.trim())return;setL('gd',true);
+  try{const t=await ai('Maïa. 2 phrases max, inspirant, français. Pas de guillemets.',`Description pour: "${title}".`);S.sd={...S.sd,desc:t.trim()};}
+  finally{setL('gd',false);draw();}
+}
+async function aiGoals(cid,ctxt){
+  set({sheet:'sug',sd:{cid}});setL('gs',true);
+  try{const t=await ai(`JSON uniquement, pas de backticks. {"objectifs":[{"titre":"...","horizon":"court|moyen|long","domaine":"${DOMAINS.map(d=>d.k).join('|')}"}]}`,`3 objectifs pour: "${ctxt}".`);S.sd={...S.sd,sug:JSON.parse(t.trim()).objectifs||[]};}
+  catch{S.sd={...S.sd,sug:[{titre:'Objectif lié à ma vision',horizon:'moyen',domaine:'perso'}]};}
+  finally{setL('gs',false);draw();}
+}
+async function aiRefl(content){
+  if(!content.trim())return;setL('jr',true);
+  try{const t=await ai('Maïa. 2-3 phrases de réflexion bienveillante, français, sans guillemets.',`Entrée de ${S.user?.prenom||'l\'utilisatrice'}: "${content}".`);S.sd={...S.sd,reflection:t.trim()};}
+  finally{setL('jr',false);draw();}
+}
+
+function draw(){
+  const root=document.getElementById('maia');
+  if(!root)return;
+  root.innerHTML=!S.user?rOb():rApp();
+  bind();
+}
+
+function rOb(){
+  if(S.step===0)return`
+    <div style="min-height:600px;background:linear-gradient(160deg,#5B0533 0%,#38001c 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 28px;text-align:center;">
+      <div style="margin-bottom:52px;display:flex;flex-direction:column;align-items:center;">
+        ${logoSVG('#F6E9CF', 48)}
+        <div style="width:28px;height:1.5px;background:#fec1d5;margin:20px auto 22px;"></div>
+        <p class="serif" style="color:rgba(255,255,255,.68);font-size:17px;line-height:1.8;max-width:250px;font-style:italic;">Regarde-toi devenir.</p>
+      </div>
+      <button class="btn" data-a="ob0" style="background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.22);color:#fff;padding:14px 32px;font-size:15px;">Commencer</button>
+      <p class="lxs" style="color:rgba(255,255,255,.25);margin-top:28px;">Intime · Précis · Pour toi</p>
+    </div>`;
+
+  const prog=`<div style="display:flex;gap:5px;margin-bottom:32px;">${[1,2,3,4].map((_,i)=>`<div style="flex:1;height:2.5px;border-radius:99px;background:${i<S.step?'#5B0533':'#eee1c8'};"></div>`).join('')}</div>`;
+
+  if(S.step===1)return`
+    <div style="min-height:600px;background:#fff8f1;padding:36px 26px 28px;display:flex;flex-direction:column;">
+      <div style="margin-bottom:24px;">${logoSVG('#5B0533', 28)}</div>
+      ${prog}
+      <div style="flex:1;">
+        <p class="lxs" style="margin-bottom:14px;">ÉTAPE 1 SUR 4</p>
+        <h1 class="serif" style="font-size:30px;font-weight:400;color:#38001c;line-height:1.3;margin-bottom:10px;">Comment devons-nous vous appeler ?</h1>
+        <p style="font-size:14px;color:#544248;line-height:1.7;margin-bottom:36px;">C'est ainsi que nous nous adresserons à vous dans vos moments de réflexion.</p>
+        <label class="lxs" style="display:block;margin-bottom:10px;">Prénom</label>
+        <input id="ob1" class="inp" type="text" value="${S.ob.prenom}" placeholder="Votre prénom..." />
+      </div>
+      <button class="btn bp bfw" data-a="ob1" ${!S.ob.prenom.trim()?'disabled':''} style="margin-top:32px;">Suivant</button>
+    </div>`;
+
+  if(S.step===2)return`
+    <div style="min-height:600px;background:#fff8f1;padding:36px 26px 28px;display:flex;flex-direction:column;">
+      <div style="margin-bottom:24px;">${logoSVG('#5B0533', 28)}</div>
+      ${prog}
+      <div style="flex:1;">
+        <p class="lxs" style="margin-bottom:14px;">ÉTAPE 2 SUR 4</p>
+        <h1 class="serif" style="font-size:30px;font-weight:400;color:#38001c;line-height:1.3;margin-bottom:10px;">Quel est votre âge ?</h1>
+        <p style="font-size:14px;color:#544248;line-height:1.7;margin-bottom:36px;">Cela nous permet d'ajuster nos conseils pour qu'ils soient le plus pertinents possible pour vous.</p>
+        <label class="lxs" style="display:block;margin-bottom:10px;">Âge</label>
+        <input id="ob2" class="inp" type="number" value="${S.ob.age}" min="10" max="120" placeholder="Votre âge..." />
+      </div>
+      <button class="btn bp bfw" data-a="ob2" ${!S.ob.age?'disabled':''} style="margin-top:32px;">Suivant</button>
+    </div>`;
+
+  if(S.step===3)return`
+    <div style="min-height:600px;background:#fff8f1;padding:36px 26px 28px;display:flex;flex-direction:column;">
+      <div style="margin-bottom:20px;">${logoSVG('#5B0533', 28)}</div>
+      ${prog}
+      <div style="flex:1;overflow-y:auto;">
+        <p class="lxs" style="margin-bottom:12px;">ÉTAPE 3 SUR 4</p>
+        <h1 class="serif" style="font-size:26px;font-weight:400;color:#38001c;line-height:1.3;margin-bottom:8px;">Sur quels domaines souhaitez-vous vous concentrer ?</h1>
+        <p style="font-size:13px;color:#544248;line-height:1.65;margin-bottom:18px;">Choisissez les piliers de votre vie que vous souhaitez explorer et faire grandir.</p>
+        <div class="dg">${DOMAINS.map(d=>`<div class="di ${S.ob.domains.includes(d.k)?'on':''}" data-a="dom" data-k="${d.k}"><span style="color:${S.ob.domains.includes(d.k)?d.c:'#867278'};flex-shrink:0;">${DI[d.k]||''}</span>${d.l}</div>`).join('')}</div>
+      </div>
+      <button class="btn bp bfw" data-a="ob3" ${S.ob.domains.length<1?'disabled':''} style="margin-top:18px;">Suivant</button>
+    </div>`;
+
+  if(S.step===4)return`
+    <div style="min-height:600px;background:#fff8f1;padding:36px 26px 28px;display:flex;flex-direction:column;">
+      <div style="margin-bottom:20px;">${logoSVG('#5B0533', 28)}</div>
+      ${prog}
+      <div style="flex:1;">
+        <p class="lxs" style="margin-bottom:12px;">ÉTAPE 4 SUR 4</p>
+        <h1 class="serif" style="font-size:26px;font-weight:400;color:#38001c;line-height:1.3;margin-bottom:8px;">Quel est votre horizon temporel ?</h1>
+        <p style="font-size:13px;color:#544248;line-height:1.65;margin-bottom:18px;">Définissez la durée de votre première introspection guidée.</p>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          ${HORIZONS.map(h=>`<button class="si ${S.ob.horizon===h.k?'on':''}" data-a="hor" data-k="${h.k}">
+            <span style="color:${S.ob.horizon===h.k?'#5B0533':'#544248'};">${HI[h.k]||''}</span>
+            <div style="flex:1;text-align:left;"><div class="serif" style="font-size:15px;font-weight:${S.ob.horizon===h.k?600:400};color:${S.ob.horizon===h.k?'#5B0533':'#211b0b'};">${h.l}</div><div style="font-size:11px;color:#544248;margin-top:1px;">${h.sub}</div></div>
+            ${S.ob.horizon===h.k?`<span style="color:#5B0533;">${I.chkc}</span>`:''}
+          </button>`).join('')}
+        </div>
+        <p class="serif" style="font-size:13px;font-style:italic;color:#867278;text-align:center;margin-top:22px;">&ldquo;Le temps est le sculpteur de l&rsquo;âme.&rdquo;</p>
+      </div>
+      <button class="btn bp bfw" data-a="ob4" ${!S.ob.horizon?'disabled':''} style="margin-top:18px;">Commencer mon voyage</button>
+    </div>`;
+  return '';
+}
+
+function rApp(){
+  const pages={home:rHome,vision:rVision,goals:rGoals,journal:rJournal};
+  return`<div class="page" style="position:relative;">
+    <div class="scroll">${(pages[S.page]||rHome)()}</div>
+    ${rNav()}
+    ${S.sheet?rSheet():''}
+  </div>`;
+}
+
+function rNav(){
+  const items=[
+    {k:'home',l:'Accueil',i:I.home,ia:I.home},
+    {k:'vision',l:'Vision',i:I.vision,ia:I.visionF},
+    {k:'goals',l:'Objectifs',i:I.goals,ia:I.goalsF},
+    {k:'journal',l:'Journal',i:I.journal,ia:I.journalF},
+  ];
+  return`<nav class="nav">${items.map(it=>`<button class="nb ${S.page===it.k?'on':''}" data-a="nav" data-p="${it.k}">${S.page===it.k?it.ia:it.i}<span>${it.l}</span></button>`).join('')}</nav>`;
+}
+
+function rHome(){
+  const u=S.user;const hr=new Date().getHours();
+  const g=hr<12?'Bonjour':hr<18?'Bon après-midi':'Bonsoir';
+  const act=S.goals.filter(g=>g.progress<100).slice(0,3);
+  const prev=S.visionCards.slice(0,3);
+  return`
+    <header style="padding:40px 22px 16px;background:linear-gradient(180deg,#fff2da 0%,#fff8f1 100%);">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+        ${logoSVG('#5B0533', 26)}
+        <p class="lxs">${g}</p>
+      </div>
+      <h1 class="serif" style="font-size:30px;font-weight:400;color:#38001c;line-height:1.2;margin-bottom:2px;">${u.prenom}</h1>
+      <p class="serif" style="font-size:13px;color:#867278;font-style:italic;">Ravi de vous revoir.</p>
+    </header>
+    <div style="padding:16px 20px;display:flex;flex-direction:column;gap:20px;">
+      <div style="border-radius:18px;padding:20px;background:linear-gradient(135deg,rgba(56,0,28,.04),rgba(254,193,213,.18));border:1px solid rgba(254,193,213,.45);position:relative;overflow:hidden;">
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <div style="padding:8px;background:linear-gradient(135deg,#5B0533,#7f5162);border-radius:10px;flex-shrink:0;color:#fff;">${I.spark}</div>
+          <div style="flex:1;">
+            <p class="lxs" style="margin-bottom:8px;color:#5B0533;">Pensée du jour</p>
+            ${S.loading.m?`<div class="dots" style="color:#5B0533;"><span></span><span></span><span></span></div>`:`<p class="serif" style="font-size:15px;color:#211b0b;line-height:1.78;font-style:italic;">${S.motivation||'Chaque journée porte en elle la promesse d\'un nouveau commencement.'}</p>`}
+          </div>
+        </div>
+        <button data-a="motiv" style="position:absolute;top:10px;right:10px;background:none;border:none;cursor:pointer;padding:4px;opacity:.4;color:#544248;">${I.refresh}</button>
+      </div>
+      ${prev.length>0?`<section>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px;">
+          <h3 class="serif" style="font-size:17px;color:#38001c;font-weight:400;">Tableau de vision</h3>
+          <button data-a="nav" data-p="vision" style="background:none;border:none;font-size:11px;color:rgba(56,0,28,.45);cursor:pointer;font-family:'Inter';">Voir tout</button>
+        </div>
+        <div style="display:grid;grid-template-columns:2fr 1fr;gap:8px;height:136px;">
+          ${prev.map((c,i)=>{const th=THEMES.find(t=>t.k===c.theme)||THEMES[0];return`<div style="border-radius:12px;background:${th.bg};padding:12px;display:flex;align-items:center;justify-content:center;${i===0?'grid-column:1;grid-row:1/3':i===1?'grid-column:2;grid-row:1':i===2?'grid-column:2;grid-row:2':''}"><p class="serif" style="font-size:${i===0?13:11}px;color:${th.tc};line-height:1.4;font-style:italic;text-align:center;">${c.text.substring(0,52)}${c.text.length>52?'…':''}</p></div>`;}).join('')}
+        </div></section>`:''}
+      <section>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px;">
+          <h3 class="serif" style="font-size:17px;color:#38001c;font-weight:400;">Mes Objectifs</h3>
+          <button data-a="nav" data-p="goals" style="background:none;border:none;font-size:11px;color:rgba(56,0,28,.45);cursor:pointer;font-family:'Inter';">Gérer</button>
+        </div>
+        ${act.length===0?`<div class="card" style="text-align:center;padding:28px 20px;"><div style="opacity:.18;margin-bottom:12px;color:#5B0533;">${I.goalsF}</div><p style="font-size:13px;color:#544248;margin-bottom:14px;">Aucun objectif en cours.</p><button class="btn bp" data-a="nav" data-p="goals" style="font-size:13px;padding:11px 20px;">${I.add} Ajouter un objectif</button></div>`:act.map(g=>{const dom=DOMAINS.find(d=>d.k===g.domain);const hor=HORIZONS.find(h=>h.k===g.horizon);return`<div class="card" style="margin-bottom:9px;padding:14px 16px;"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;"><div style="display:flex;gap:7px;align-items:center;">${dom?`<span style="color:${dom.c};">${DI[dom.k]||''}</span>`:''}<span style="font-size:14px;font-weight:500;">${g.title}</span></div><span class="pill ph">${hor?.sub||''}</span></div><div style="display:flex;align-items:center;gap:8px;"><div class="pt" style="flex:1;"><div class="pf" style="width:${g.progress}%;"></div></div><span style="font-size:12px;font-weight:700;color:#5B0533;min-width:30px;">${g.progress}%</span></div></div>`;}).join('')}
+      </section>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div data-a="nav" data-p="vision" style="background:linear-gradient(135deg,#5B0533,#9b3d66);border-radius:16px;padding:17px 14px;cursor:pointer;color:#fff;">${I.photo}<p class="serif" style="font-size:14px;font-weight:600;margin:8px 0 0;">Ma vision</p><p style="font-size:11px;color:rgba(255,255,255,.6);margin:3px 0 0;">Ajouter des cartes</p></div>
+        <div data-a="nav" data-p="journal" style="background:#fff2da;border-radius:16px;padding:17px 14px;cursor:pointer;"><span style="color:#5B0533;">${I.pen}</span><p class="serif" style="font-size:14px;font-weight:600;color:#5B0533;margin:8px 0 0;">Mon journal</p><p style="font-size:11px;color:#867278;margin:3px 0 0;">Écrire ma journée</p></div>
+      </div>
+    </div>`;
+}
+
+function rVision(){
+  return`
+    <header style="padding:40px 22px 14px;background:linear-gradient(180deg,rgba(91,5,51,.07),transparent);">
+      <div style="margin-bottom:14px;">${logoSVG('#5B0533', 26)}</div>
+      <h1 class="serif" style="font-size:24px;font-weight:400;color:#38001c;">Tableau de Vision</h1>
+      <p style="font-size:13px;color:#867278;margin-top:3px;">Transformez vos rêves en étapes concrètes.</p>
+    </header>
+    <div style="padding:0 20px 16px;">
+      <button class="btn bp" data-a="addCard" style="margin-bottom:18px;">${I.add} Nouvelle carte</button>
+      ${S.visionCards.length===0?`<div style="text-align:center;padding:46px 20px;"><div style="opacity:.15;margin-bottom:14px;color:#5B0533;">${I.photo}</div><p class="serif" style="font-size:17px;color:#38001c;margin-bottom:6px;font-weight:400;">Votre tableau vous attend</p><p style="font-size:13px;color:#867278;">Ajoutez votre première intention de vie</p></div>`:
+      `<div style="display:grid;grid-template-columns:1fr 1fr;gap:11px;">${S.visionCards.map((c,i)=>{const th=THEMES.find(t=>t.k===c.theme)||THEMES[0];const ln=S.goals.filter(g=>g.linked===c.id).length;return`<div class="vc" style="background:${th.bg};${i===0&&S.visionCards.length>1?'grid-column:1/3;min-height:148px;':''}"><p class="serif" style="font-size:${i===0?15:13}px;color:${th.tc};line-height:1.5;font-style:italic;flex:1;">${c.text}</p><div style="display:flex;justify-content:space-between;align-items:center;margin-top:11px;"><span style="font-size:10px;color:${th.tc}88;text-transform:uppercase;letter-spacing:.06em;">${ln} objectif${ln!==1?'s':''}</span><div style="display:flex;gap:5px;"><button data-a="sug" data-id="${c.id}" data-txt="${encodeURIComponent(c.text)}" style="display:flex;align-items:center;gap:3px;background:${th.tc}20;border:none;border-radius:8px;padding:5px 9px;cursor:pointer;color:${th.tc};"><span style="color:${th.tc};">${I.spark}</span><span style="font-size:11px;font-weight:500;font-family:'Inter';">IA</span></button><button data-a="rmCard" data-id="${c.id}" style="background:${th.tc}18;border:none;border-radius:8px;padding:5px 7px;cursor:pointer;color:${th.tc};">${I.close}</button></div></div></div>`;}).join('')}</div>`}
+    </div>`;
+}
+
+function rGoals(){
+  const fh=S.filterH;const list=fh==='all'?S.goals:S.goals.filter(g=>g.horizon===fh);
+  return`
+    <header style="padding:40px 22px 14px;">
+      <div style="margin-bottom:14px;">${logoSVG('#5B0533', 26)}</div>
+      <h1 class="serif" style="font-size:24px;font-weight:400;color:#38001c;">Gestion des objectifs</h1>
+      <p style="font-size:13px;color:#867278;margin-top:3px;">Transformez vos rêves en étapes concrètes.</p>
+    </header>
+    <div style="padding:0 20px 16px;">
+      <div style="display:flex;gap:7px;margin-bottom:16px;overflow-x:auto;padding-bottom:2px;">${[{k:'all',l:'Tous'},...HORIZONS.map(h=>({k:h.k,l:h.l}))].map(h=>`<button class="ft ${fh===h.k?'on':''}" data-a="fh" data-k="${h.k}">${h.l}</button>`).join('')}</div>
+      <button class="btn bp" data-a="addGoal" style="margin-bottom:16px;">${I.add} Nouvel objectif</button>
+      ${list.length===0?`<div style="text-align:center;padding:40px 20px;"><div style="opacity:.15;margin:0 auto 10px;color:#5B0533;">${I.goalsF}</div><p style="font-size:13px;color:#544248;">Aucun objectif dans cette catégorie.</p></div>`:
+      list.map(g=>{const dom=DOMAINS.find(d=>d.k===g.domain);const hor=HORIZONS.find(h=>h.k===g.horizon);const done=g.progress>=100;return`<div class="card" style="margin-bottom:10px;opacity:${done?.65:1};"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;"><div style="flex:1;"><div style="display:flex;gap:7px;align-items:center;margin-bottom:5px;">${dom?`<span style="color:${dom.c};">${DI[dom.k]||''}</span>`:''}<span style="font-size:14px;font-weight:500;text-decoration:${done?'line-through':'none'};color:${done?'#867278':'#211b0b'};">${g.title}</span></div>${g.desc?`<p style="font-size:12px;color:#544248;margin:0 0 7px;line-height:1.5;">${g.desc}</p>`:''}<div style="display:flex;gap:5px;flex-wrap:wrap;"><span class="pill ph">${hor?.sub||''}</span>${dom?`<span class="pill" style="background:${dom.c}16;color:${dom.c};">${dom.l}</span>`:''} ${done?`<span class="pill pd">Accompli</span>`:''}</div></div><div style="display:flex;gap:5px;flex-shrink:0;margin-left:8px;"><button data-a="editGoal" data-id="${g.id}" style="background:#f4e7cd;border:none;border-radius:9px;padding:7px;cursor:pointer;color:#544248;">${I.edit}</button><button data-a="rmGoal" data-id="${g.id}" style="background:rgba(186,26,26,.08);border:none;border-radius:9px;padding:7px;cursor:pointer;color:#ba1a1a;">${I.trash}</button></div></div><div style="display:flex;align-items:center;gap:8px;"><div class="pt" style="flex:1;"><div class="pf" style="width:${g.progress}%;"></div></div><span style="font-size:12px;font-weight:700;color:${done?'#205027':'#5B0533'};min-width:30px;">${done?'✓':`${g.progress}%`}</span></div></div>`;}).join('')}
+    </div>`;
+}
+
+function rJournal(){
+  const grp={};S.journal.forEach(e=>{const d=new Date(e.date).toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});if(!grp[d])grp[d]=[];grp[d].push(e);});
+  return`
+    <header style="padding:40px 22px 14px;background:linear-gradient(180deg,#fff2da,transparent);">
+      <div style="margin-bottom:14px;">${logoSVG('#5B0533', 26)}</div>
+      <h1 class="serif" style="font-size:24px;font-weight:400;color:#38001c;">Journal</h1>
+      <p style="font-size:13px;color:#867278;margin-top:3px;">Ancrez vos moments importants.</p>
+    </header>
+    <div style="padding:0 20px 16px;">
+      <button class="btn bp" data-a="addJ" style="margin-bottom:18px;">${I.pen} Nouvelle entrée</button>
+      ${S.journal.length===0?`<div style="text-align:center;padding:46px 20px;"><div style="opacity:.15;margin-bottom:14px;color:#5B0533;">${I.journalF}</div><p class="serif" style="font-size:17px;color:#38001c;margin-bottom:6px;font-weight:400;">Votre journal vous attend</p><p style="font-size:13px;color:#867278;">Écrivez vos moments importants</p></div>`:
+      Object.entries(grp).map(([date,ents])=>`<div style="margin-bottom:20px;"><p class="lxs" style="margin-bottom:8px;">${date}</p>${ents.map(e=>`<div class="card" style="margin-bottom:9px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;"><span style="font-size:20px;">${e.mood}</span><div style="display:flex;gap:6px;align-items:center;"><span style="font-size:11px;color:#867278;">${new Date(e.date).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}</span><button data-a="rmJ" data-id="${e.id}" style="background:none;border:none;cursor:pointer;padding:2px;color:#867278;opacity:.45;">${I.close}</button></div></div><p class="serif" style="font-size:14px;color:#211b0b;line-height:1.78;margin-bottom:${e.reflection?'10px':'0'};">${e.content}</p>${e.reflection?`<div style="background:rgba(91,5,51,.04);border-radius:10px;padding:10px 12px;border-left:2.5px solid #fec1d5;"><p style="font-size:12px;color:#544248;line-height:1.55;font-style:italic;">✨ ${e.reflection}</p></div>`:''}${e.tags?.length>0?`<div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;">${e.tags.map(t=>`<span class="tag">#${t}</span>`).join('')}</div>`:''}</div>`).join('')}</div>`).join('')}
+    </div>`;
+}
+
+function rSheet(){
+  const sd=S.sd;
+  if(S.sheet==='addCard')return`<div class="bd" data-a="cls"><div class="sh" onclick="event.stopPropagation()"><h3 class="serif" style="font-size:19px;color:#38001c;font-weight:400;margin-bottom:16px;">Nouvelle carte de vision</h3><label class="lxs" style="display:block;margin-bottom:7px;">Votre intention</label><textarea id="cTxt" class="is" rows="3" style="margin-bottom:14px;" placeholder="Ex : Vivre dans une maison lumineuse entourée de nature...">${sd.text||''}</textarea><label class="lxs" style="display:block;margin-bottom:8px;">Thème visuel</label><div style="display:flex;gap:8px;margin-bottom:18px;">${THEMES.map(t=>`<div data-a="thm" data-k="${t.k}" style="width:42px;height:42px;border-radius:10px;background:${t.bg};border:3px solid ${(sd.theme||'rose')===t.k?'#5B0533':'transparent'};cursor:pointer;"></div>`).join('')}</div><div style="display:flex;gap:8px;"><button class="btn bs" data-a="cls">Annuler</button><button class="btn bp" data-a="saveCard" ${!(sd.text||'').trim()?'disabled':''} style="flex:1;">${I.check} Ajouter</button></div></div></div>`;
+
+  if(S.sheet==='addGoal'||S.sheet==='editGoal'){const ie=S.sheet==='editGoal';return`<div class="bd" data-a="cls"><div class="sh" onclick="event.stopPropagation()"><h3 class="serif" style="font-size:19px;color:#38001c;font-weight:400;margin-bottom:14px;">${ie?'Modifier l\'objectif':'Nouvel objectif'}</h3><label class="lxs" style="display:block;margin-bottom:5px;">Titre</label><div style="display:flex;gap:7px;margin-bottom:12px;"><input type="text" id="gT" class="is" value="${sd.title||''}" placeholder="Ex : Voyager dans un nouveau pays" style="flex:1;" /><button data-a="aiD" style="padding:11px 12px;background:linear-gradient(135deg,#5B0533,#7f5162);border-radius:12px;border:none;cursor:pointer;color:#fff;flex-shrink:0;">${S.loading.gd?`<div class="dots" style="color:#fff;"><span></span><span></span><span></span></div>`:I.spark}</button></div><label class="lxs" style="display:block;margin-bottom:5px;">Description</label><textarea id="gD" class="is" rows="2" style="margin-bottom:12px;" placeholder="L'intention derrière cet objectif...">${sd.desc||''}</textarea><label class="lxs" style="display:block;margin-bottom:6px;">Horizon</label><div style="display:flex;gap:7px;margin-bottom:12px;">${HORIZONS.map(h=>`<button data-a="gH" data-k="${h.k}" style="flex:1;padding:9px 5px;border-radius:10px;border:2px solid ${(sd.horizon||'moyen')===h.k?'#5B0533':'transparent'};background:${(sd.horizon||'moyen')===h.k?'rgba(91,5,51,.08)':'#f4e7cd'};color:${(sd.horizon||'moyen')===h.k?'#5B0533':'#544248'};font-family:'Inter';font-size:11px;cursor:pointer;font-weight:${(sd.horizon||'moyen')===h.k?600:400};">${h.l}</button>`).join('')}</div><label class="lxs" style="display:block;margin-bottom:6px;">Domaine</label><div class="dg" style="margin-bottom:12px;">${DOMAINS.map(d=>`<button data-a="gDom" data-k="${d.k}" style="display:flex;align-items:center;gap:6px;padding:9px 10px;border-radius:10px;border:2px solid ${(sd.domain||'perso')===d.k?'#5B0533':'transparent'};background:${(sd.domain||'perso')===d.k?'rgba(91,5,51,.08)':'#f4e7cd'};color:${(sd.domain||'perso')===d.k?'#5B0533':'#544248'};font-family:'Inter';font-size:11px;cursor:pointer;font-weight:${(sd.domain||'perso')===d.k?600:400};">${DI[d.k]||''}${d.l}</button>`).join('')}</div><label class="lxs" id="pLabel" style="display:block;margin-bottom:4px;">Progression — ${sd.progress||0}%</label><input type="range" id="gP" min="0" max="100" step="5" value="${sd.progress||0}" style="margin-bottom:14px;" /><div style="display:flex;gap:8px;"><button class="btn bs" data-a="cls">Annuler</button><button class="btn bp" data-a="saveGoal" ${!(sd.title||'').trim()?'disabled':''} style="flex:1;">${I.check} Enregistrer</button></div></div></div>`;}
+
+  if(S.sheet==='addJ')return`<div class="bd" data-a="cls"><div class="sh" onclick="event.stopPropagation()"><h3 class="serif" style="font-size:19px;color:#38001c;font-weight:400;margin-bottom:14px;">Nouvelle entrée</h3><label class="lxs" style="display:block;margin-bottom:6px;">Humeur</label><div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:13px;">${MOODS.map(m=>`<button class="md ${(sd.mood||'✨')===m?'on':''}" data-a="mood" data-m="${m}">${m}</button>`).join('')}</div><label class="lxs" style="display:block;margin-bottom:5px;">Ma pensée du moment</label><textarea id="jC" class="is" rows="4" style="margin-bottom:10px;" placeholder="Ce que vous avez vécu, ressenti, réalisé aujourd'hui...">${sd.content||''}</textarea><button class="btn bs" data-a="aiR" ${S.loading.jr?'disabled':''} style="margin-bottom:12px;">${S.loading.jr?`<div class="dots" style="color:#5B0533;"><span></span><span></span><span></span></div>`:`${I.spark} Réflexion Maïa`}</button>${sd.reflection?`<div style="background:rgba(91,5,51,.04);border-radius:12px;padding:12px 14px;margin-bottom:12px;border-left:2.5px solid #fec1d5;"><p class="serif" style="font-size:13px;color:#211b0b;line-height:1.6;font-style:italic;">${sd.reflection}</p><p class="lxs" style="margin-top:6px;">Pensée de Maïa</p></div>`:''}<label class="lxs" style="display:block;margin-bottom:5px;">Tags</label><div style="display:flex;gap:7px;margin-bottom:8px;"><input type="text" id="tI" class="is" value="${sd.tagInput||''}" placeholder="Ex : victoire, santé..." style="flex:1;" /><button data-a="addTag" class="btn bs" style="padding:10px 12px;white-space:nowrap;">+ Tag</button></div>${sd.tags?.length>0?`<div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;">${sd.tags.map(t=>`<span class="tag" data-a="rmTag" data-t="${t}">${t} ×</span>`).join('')}</div>`:''}<div style="display:flex;gap:8px;margin-top:4px;"><button class="btn bs" data-a="cls">Annuler</button><button class="btn bp" data-a="saveJ" ${!(sd.content||'').trim()?'disabled':''} style="flex:1;">${I.check} Enregistrer</button></div></div></div>`;
+
+  if(S.sheet==='sug'){const s=sd.sug||[];return`<div class="bd" data-a="cls"><div class="sh" onclick="event.stopPropagation()"><div style="display:flex;gap:10px;align-items:center;margin-bottom:5px;"><div style="padding:8px;background:linear-gradient(135deg,#5B0533,#7f5162);border-radius:10px;color:#fff;">${I.spark}</div><h3 class="serif" style="font-size:18px;color:#38001c;font-weight:400;">Objectifs suggérés</h3></div><p style="font-size:13px;color:#544248;margin-bottom:16px;">Sélectionnez un objectif à ajouter</p>${S.loading.gs?`<div style="text-align:center;padding:22px;"><div class="dots" style="color:#5B0533;"><span></span><span></span><span></span></div></div>`:s.map((sg,i)=>{const dom=DOMAINS.find(d=>d.k===sg.domaine)||DOMAINS[0];const hor=HORIZONS.find(h=>h.k===sg.horizon)||HORIZONS[1];return`<div data-a="addSug" data-i="${i}" style="padding:13px 15px;border-radius:12px;background:#fff;cursor:pointer;border:1.5px solid rgba(217,192,199,.28);display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;" onmouseover="this.style.borderColor='#5B0533'" onmouseout="this.style.borderColor='rgba(217,192,199,.28)'"><div style="display:flex;gap:9px;align-items:center;"><span style="color:${dom.c};">${DI[dom.k]||''}</span><div><p style="font-size:13px;font-weight:500;color:#211b0b;margin-bottom:1px;">${sg.titre}</p><p style="font-size:11px;color:#867278;">${hor.sub} · ${dom.l}</p></div></div>${I.addc}</div>`;}).join('')}<button class="btn bs bfw" data-a="cls" style="margin-top:6px;">Fermer</button></div></div>`;}
+  return'';
+}
+
+function bind(){
+  document.querySelectorAll('[data-a]').forEach(el=>el.addEventListener('click',handle,{once:true}));
+  const o1=document.getElementById('ob1');
+  if(o1){o1.focus();o1.addEventListener('input',e=>{S.ob={...S.ob,prenom:e.target.value};const b=document.querySelector('[data-a="ob1"]');if(b)b.disabled=!e.target.value.trim();});}
+  const o2=document.getElementById('ob2');
+  if(o2){o2.focus();o2.addEventListener('input',e=>{S.ob={...S.ob,age:e.target.value};const b=document.querySelector('[data-a="ob2"]');if(b)b.disabled=!e.target.value;});}
+  const ct=document.getElementById('cTxt');if(ct)ct.addEventListener('input',e=>{S.sd={...S.sd,text:e.target.value};const b=document.querySelector('[data-a="saveCard"]');if(b)b.disabled=!e.target.value.trim();});
+  const gt=document.getElementById('gT');if(gt)gt.addEventListener('input',e=>{S.sd={...S.sd,title:e.target.value};const b=document.querySelector('[data-a="saveGoal"]');if(b)b.disabled=!e.target.value.trim();});
+  const gd=document.getElementById('gD');if(gd)gd.addEventListener('input',e=>{S.sd={...S.sd,desc:e.target.value};});
+  const gp=document.getElementById('gP');if(gp)gp.addEventListener('input',e=>{S.sd={...S.sd,progress:parseInt(e.target.value)};const l=document.getElementById('pLabel');if(l)l.textContent=`Progression — ${e.target.value}%`;});
+  const jc=document.getElementById('jC');if(jc)jc.addEventListener('input',e=>{S.sd={...S.sd,content:e.target.value};const b=document.querySelector('[data-a="saveJ"]');if(b)b.disabled=!e.target.value.trim();});
+  const ti=document.getElementById('tI');if(ti){ti.addEventListener('input',e=>{S.sd={...S.sd,tagInput:e.target.value};});ti.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();doTag();}});}
+}
+function doTag(){const ti=document.getElementById('tI');const v=(ti?.value||S.sd.tagInput||'').trim();if(v&&!(S.sd.tags||[]).includes(v)){S.sd={...S.sd,tags:[...(S.sd.tags||[]),v],tagInput:''};draw();}}
+
+function handle(e){
+  const el=e.currentTarget;const a=el.dataset.a;
+  if(a==='ob0')set({step:1});
+  else if(a==='ob1'){if(S.ob.prenom.trim())set({step:2});}
+  else if(a==='ob2'){if(S.ob.age)set({step:3});}
+  else if(a==='ob3'){if(S.ob.domains.length>=1)set({step:4});}
+  else if(a==='ob4'){if(S.ob.horizon){set({user:{prenom:S.ob.prenom,age:parseInt(S.ob.age),domains:S.ob.domains,horizon:S.ob.horizon}});setTimeout(getMotiv,300);}}
+  else if(a==='dom'){const k=el.dataset.k;set({ob:{...S.ob,domains:S.ob.domains.includes(k)?S.ob.domains.filter(x=>x!==k):[...S.ob.domains,k]}});}
+  else if(a==='hor')set({ob:{...S.ob,horizon:el.dataset.k}});
+  else if(a==='nav')set({page:el.dataset.p,sheet:null});
+  else if(a==='motiv')getMotiv();
+  else if(a==='addCard')set({sheet:'addCard',sd:{theme:'rose',text:''}});
+  else if(a==='cls')set({sheet:null,sd:{}});
+  else if(a==='thm'){S.sd={...S.sd,theme:el.dataset.k};draw();}
+  else if(a==='saveCard'){const t=document.getElementById('cTxt')?.value||S.sd.text||'';if(t.trim())set({visionCards:[...S.visionCards,{id:Date.now(),text:t.trim(),theme:S.sd.theme||'rose'}],sheet:null,sd:{}});}
+  else if(a==='rmCard')set({visionCards:S.visionCards.filter(c=>c.id!==parseInt(el.dataset.id))});
+  else if(a==='sug')aiGoals(parseInt(el.dataset.id),decodeURIComponent(el.dataset.txt));
+  else if(a==='addSug'){const sg=S.sd.sug?.[parseInt(el.dataset.i)];if(sg)set({goals:[...S.goals,{id:Date.now(),title:sg.titre,horizon:sg.horizon,domain:sg.domaine,progress:0,desc:'Lié au tableau de vision',linked:S.sd.cid}],sheet:null,sd:{}});}
+  else if(a==='fh')set({filterH:el.dataset.k});
+  else if(a==='addGoal')set({sheet:'addGoal',sd:{title:'',horizon:'moyen',domain:'perso',desc:'',progress:0}});
+  else if(a==='editGoal'){const g=S.goals.find(x=>x.id===parseInt(el.dataset.id));if(g)set({sheet:'editGoal',sd:{...g}});}
+  else if(a==='gH'){S.sd={...S.sd,horizon:el.dataset.k};draw();}
+  else if(a==='gDom'){S.sd={...S.sd,domain:el.dataset.k};draw();}
+  else if(a==='aiD'){const t=document.getElementById('gT')?.value||S.sd.title||'';S.sd={...S.sd,title:t};aiDesc(t);}
+  else if(a==='saveGoal'){const title=document.getElementById('gT')?.value||S.sd.title||'';const desc=document.getElementById('gD')?.value||S.sd.desc||'';const prog=parseInt(document.getElementById('gP')?.value??S.sd.progress??0);if(!title.trim())return;const sd=S.sd;if(S.sheet==='editGoal')set({goals:S.goals.map(g=>g.id===sd.id?{...g,title:title.trim(),desc,horizon:sd.horizon||'moyen',domain:sd.domain||'perso',progress:prog}:g),sheet:null,sd:{}});else set({goals:[...S.goals,{id:Date.now(),title:title.trim(),desc,horizon:sd.horizon||'moyen',domain:sd.domain||'perso',progress:prog}],sheet:null,sd:{}});}
+  else if(a==='rmGoal')set({goals:S.goals.filter(g=>g.id!==parseInt(el.dataset.id))});
+  else if(a==='addJ')set({sheet:'addJ',sd:{mood:'✨',content:'',tags:[],tagInput:'',reflection:''}});
+  else if(a==='mood'){S.sd={...S.sd,mood:el.dataset.m};draw();}
+  else if(a==='aiR'){const c=document.getElementById('jC')?.value||S.sd.content||'';S.sd={...S.sd,content:c};aiRefl(c);}
+  else if(a==='addTag')doTag();
+  else if(a==='rmTag'){S.sd={...S.sd,tags:(S.sd.tags||[]).filter(t=>t!==el.dataset.t)};draw();}
+  else if(a==='saveJ'){const c=document.getElementById('jC')?.value||S.sd.content||'';if(!c.trim())return;const sd=S.sd;set({journal:[{id:Date.now(),date:new Date().toISOString(),content:c.trim(),mood:sd.mood||'✨',tags:sd.tags||[],reflection:sd.reflection||''},...S.journal],sheet:null,sd:{}});}
+  else if(a==='rmJ')set({journal:S.journal.filter(j=>j.id!==parseInt(el.dataset.id))});
+}
+
+draw();
+</script>
