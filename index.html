@@ -21,47 +21,64 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
   *{box-sizing:border-box;margin:0;padding:0;}
-  html,body{
-    height:100%; height:100dvh;
-    background:#5B0533;
+
+  /* L'app occupe tout l'écran, sans débordement */
+  html, body {
+    width:100%; height:100%;
+    background:#fff8f1;
     overflow:hidden;
   }
-  body{display:flex;justify-content:center;align-items:flex-start;}
-  #maia{
+  body { display:flex; justify-content:center; }
+
+  #maia {
     font-family:'Inter',sans-serif;
     background:#fff8f1;
+    color:#211b0b;
     width:100%;
     max-width:430px;
-    height:100vh; height:100dvh;
+    /* Hauteur = toute la fenêtre, safe-area incluse */
+    height:100%;
+    display:flex;
+    flex-direction:column;
     position:relative;
     overflow:hidden;
-    color:#211b0b;
   }
-  .page{animation:fadeUp .28s ease;}
-  @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-  .scroll{
-    height:100vh; height:100dvh;
+
+  /* Zone scrollable qui prend tout l'espace disponible entre header invisible et nav */
+  .scroll {
+    flex:1;
     overflow-y:auto;
-    padding-top:env(safe-area-inset-top);
-    padding-bottom:calc(84px + env(safe-area-inset-bottom));
+    overflow-x:hidden;
+    -webkit-overflow-scrolling:touch;
     scrollbar-width:none;
+    /* Padding top = Dynamic Island / notch, padding bottom = nav height + home indicator */
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px));
   }
   .scroll::-webkit-scrollbar{display:none;}
+
+  .page{animation:fadeUp .25s ease;display:flex;flex-direction:column;height:100%;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
   .serif{font-family:'Noto Serif',serif;}
   .lxs{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#544248;font-weight:500;}
 
-  /* NAV */
+  /* NAV — collée en bas, hauteur fixe + safe area */
   .nav{
-    position:fixed;bottom:0;left:50%;transform:translateX(-50%);
-    width:100%;max-width:430px;
-    z-index:50;display:flex;justify-content:space-around;align-items:center;
-    padding:10px 8px calc(14px + env(safe-area-inset-bottom));
-    background:rgba(238,225,200,.95);
+    flex-shrink:0;
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+    /* Padding bottom adaptatif : safe area iPhone ou 0 ailleurs */
+    padding: 10px 8px env(safe-area-inset-bottom, 12px);
+    /* Hauteur minimale visible des boutons */
+    min-height: 60px;
+    background:rgba(238,225,200,.97);
     backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-    border-radius:24px 24px 0 0;
+    border-radius:20px 20px 0 0;
     box-shadow:0 -4px 24px rgba(33,27,11,.09);
+    /* Pas de position:fixed — elle suit le flex layout, plus de bande bordeaux */
   }
-  .nb{display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 16px;border-radius:12px;border:none;cursor:pointer;background:transparent;color:#867278;font-family:'Inter';font-size:10px;letter-spacing:.06em;text-transform:uppercase;font-weight:500;transition:all .2s;}
+  .nb{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 14px;border-radius:12px;border:none;cursor:pointer;background:transparent;color:#867278;font-family:'Inter';font-size:10px;letter-spacing:.06em;text-transform:uppercase;font-weight:500;transition:all .2s;}
   .nb.on{background:#5B0533;color:#fff;}
 
   /* BUTTONS */
@@ -440,8 +457,10 @@ function draw(){
 
 // ── ONBOARDING ────────────────────────────────────────────────────────────────
 function rOb(){
-  if(S.step===0)return`
-    <div style="min-height:100vh;min-height:100dvh;background:linear-gradient(160deg,#5B0533 0%,#38001c 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:calc(40px + env(safe-area-inset-top)) 28px calc(40px + env(safe-area-inset-bottom));text-align:center;">
+  // Onboarding wraps in a full-height flex column that fills #maia
+  function wrap(content){ return`<div class="page" style="height:100%;display:flex;flex-direction:column;">${content}</div>`; }
+  if(S.step===0)return wrap(`
+    <div style="flex:1;background:linear-gradient(160deg,#5B0533 0%,#38001c 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:calc(44px + env(safe-area-inset-top)) 28px calc(32px + env(safe-area-inset-bottom));text-align:center;">
       <div style="margin-bottom:52px;display:flex;flex-direction:column;align-items:center;">
         ${logoSVG('#F6E9CF',52)}
         <div style="width:28px;height:1.5px;background:#fec1d5;margin:20px auto 22px;"></div>
@@ -449,12 +468,12 @@ function rOb(){
       </div>
       <button class="btn" data-a="ob0" style="background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.22);color:#fff;padding:14px 32px;font-size:15px;">Commencer</button>
       <p class="lxs" style="color:rgba(255,255,255,.25);margin-top:28px;">Intime · Précis · Pour toi</p>
-    </div>`;
+    </div>`);
 
   const prog=`<div style="display:flex;gap:5px;margin-bottom:32px;">${[1,2,3,4].map((_,i)=>`<div style="flex:1;height:2.5px;border-radius:99px;background:${i<S.step?'#5B0533':'#eee1c8'};"></div>`).join('')}</div>`;
 
-  if(S.step===1)return`
-    <div style="min-height:100vh;min-height:100dvh;background:#fff8f1;padding:calc(48px + env(safe-area-inset-top)) 26px 28px;display:flex;flex-direction:column;">
+  if(S.step===1)return wrap(`
+    <div style="flex:1;background:#fff8f1;padding:calc(48px + env(safe-area-inset-top)) 26px calc(28px + env(safe-area-inset-bottom));display:flex;flex-direction:column;">
       <div style="margin-bottom:24px;">${logoSVG('#5B0533',28)}</div>
       ${prog}
       <div style="flex:1;">
@@ -465,10 +484,10 @@ function rOb(){
         <input id="ob1" class="inp" type="text" value="${S.ob.prenom}" placeholder="Votre prénom..." autocomplete="off"/>
       </div>
       <button class="btn bp bfw" data-a="ob1" ${!S.ob.prenom.trim()?'disabled':''} style="margin-top:32px;">Suivant</button>
-    </div>`;
+    </div>`);
 
-  if(S.step===2)return`
-    <div style="min-height:100dvh;background:#fff8f1;padding:calc(48px + env(safe-area-inset-top)) 26px 28px;display:flex;flex-direction:column;">
+  if(S.step===2)return wrap(`
+    <div style="flex:1;background:#fff8f1;padding:calc(48px + env(safe-area-inset-top)) 26px calc(28px + env(safe-area-inset-bottom));display:flex;flex-direction:column;">
       <div style="margin-bottom:24px;">${logoSVG('#5B0533',28)}</div>
       ${prog}
       <div style="flex:1;">
@@ -479,10 +498,10 @@ function rOb(){
         <input id="ob2" class="inp" type="number" value="${S.ob.age}" min="10" max="120" placeholder="Votre âge..."/>
       </div>
       <button class="btn bp bfw" data-a="ob2" ${!S.ob.age?'disabled':''} style="margin-top:32px;">Suivant</button>
-    </div>`;
+    </div>`);
 
-  if(S.step===3)return`
-    <div style="min-height:100dvh;background:#fff8f1;padding:calc(48px + env(safe-area-inset-top)) 26px 28px;display:flex;flex-direction:column;">
+  if(S.step===3)return wrap(`
+    <div style="flex:1;background:#fff8f1;padding:calc(48px + env(safe-area-inset-top)) 26px calc(28px + env(safe-area-inset-bottom));display:flex;flex-direction:column;">
       <div style="margin-bottom:20px;">${logoSVG('#5B0533',28)}</div>
       ${prog}
       <div style="flex:1;overflow-y:auto;">
@@ -492,13 +511,13 @@ function rOb(){
         <div class="dg">${DOMAINS.map(d=>`<div class="di ${S.ob.domains.includes(d.k)?'on':''}" data-a="dom" data-k="${d.k}"><span style="color:${S.ob.domains.includes(d.k)?d.c:'#867278'};flex-shrink:0;">${DI[d.k]||''}</span>${d.l}</div>`).join('')}</div>
       </div>
       <button class="btn bp bfw" data-a="ob3" ${S.ob.domains.length<1?'disabled':''} style="margin-top:18px;">Suivant</button>
-    </div>`;
+    </div>`);
 
-  if(S.step===4)return`
-    <div style="min-height:100dvh;background:#fff8f1;padding:calc(48px + env(safe-area-inset-top)) 26px 28px;display:flex;flex-direction:column;">
+  if(S.step===4)return wrap(`
+    <div style="flex:1;background:#fff8f1;padding:calc(48px + env(safe-area-inset-top)) 26px calc(28px + env(safe-area-inset-bottom));display:flex;flex-direction:column;">
       <div style="margin-bottom:20px;">${logoSVG('#5B0533',28)}</div>
       ${prog}
-      <div style="flex:1;">
+      <div style="flex:1;overflow-y:auto;">
         <p class="lxs" style="margin-bottom:12px;">ÉTAPE 4 SUR 4</p>
         <h1 class="serif" style="font-size:26px;font-weight:400;color:#38001c;line-height:1.3;margin-bottom:8px;">Quel est votre horizon temporel ?</h1>
         <p style="font-size:13px;color:#544248;line-height:1.65;margin-bottom:18px;">Définissez la durée de votre première introspection guidée.</p>
@@ -512,14 +531,15 @@ function rOb(){
         <p class="serif" style="font-size:13px;font-style:italic;color:#867278;text-align:center;margin-top:22px;">&ldquo;Le temps est le sculpteur de l&rsquo;âme.&rdquo;</p>
       </div>
       <button class="btn bp bfw" data-a="ob4" ${!S.ob.horizon?'disabled':''} style="margin-top:18px;">Commencer mon voyage</button>
-    </div>`;
+    </div>`);
   return '';
 }
 
 // ── APP SHELL ─────────────────────────────────────────────────────────────────
 function rApp(){
   const pages={home:rHome,vision:rVision,goals:rGoals,journal:rJournal};
-  return`<div class="page" style="position:relative;">
+  // .page is a flex column filling #maia : scroll grows, nav stays at bottom
+  return`<div class="page" style="display:flex;flex-direction:column;height:100%;position:relative;">
     <div class="scroll">${(pages[S.page]||rHome)()}</div>
     ${rNav()}
     ${S.sheet?rSheet():''}
