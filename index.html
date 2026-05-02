@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover"/>
 <title>Maïa</title>
 
 <!-- PWA -->
@@ -21,22 +21,31 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
   *{box-sizing:border-box;margin:0;padding:0;}
-  html,body{height:100%;background:#1a0010;}
+  html,body{
+    height:100%; height:100dvh;
+    background:#5B0533;
+    overflow:hidden;
+  }
   body{display:flex;justify-content:center;align-items:flex-start;}
   #maia{
     font-family:'Inter',sans-serif;
     background:#fff8f1;
     width:100%;
     max-width:430px;
-    min-height:100vh;
+    height:100vh; height:100dvh;
     position:relative;
     overflow:hidden;
     color:#211b0b;
-    box-shadow:0 0 60px rgba(0,0,0,0.4);
   }
   .page{animation:fadeUp .28s ease;}
   @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-  .scroll{height:100vh;overflow-y:auto;padding-bottom:84px;scrollbar-width:none;}
+  .scroll{
+    height:100vh; height:100dvh;
+    overflow-y:auto;
+    padding-top:env(safe-area-inset-top);
+    padding-bottom:calc(84px + env(safe-area-inset-bottom));
+    scrollbar-width:none;
+  }
   .scroll::-webkit-scrollbar{display:none;}
   .serif{font-family:'Noto Serif',serif;}
   .lxs{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#544248;font-weight:500;}
@@ -46,7 +55,7 @@
     position:fixed;bottom:0;left:50%;transform:translateX(-50%);
     width:100%;max-width:430px;
     z-index:50;display:flex;justify-content:space-around;align-items:center;
-    padding:10px 8px 18px;
+    padding:10px 8px calc(14px + env(safe-area-inset-bottom));
     background:rgba(238,225,200,.95);
     backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
     border-radius:24px 24px 0 0;
@@ -83,7 +92,7 @@
 
   /* SHEET */
   .bd{position:fixed;inset:0;background:rgba(33,27,11,.48);z-index:100;display:flex;align-items:flex-end;justify-content:center;}
-  .sh{background:#fff8f1;border-radius:24px 24px 0 0;padding:26px 22px 40px;width:100%;max-width:430px;max-height:82vh;overflow-y:auto;animation:su .3s ease;}
+  .sh{background:#fff8f1;border-radius:24px 24px 0 0;padding:26px 22px calc(40px + env(safe-area-inset-bottom));width:100%;max-width:430px;max-height:82dvh;overflow-y:auto;animation:su .3s ease;}
   @keyframes su{from{transform:translateY(100%)}to{transform:none}}
 
   /* PILLS */
@@ -432,7 +441,7 @@ function draw(){
 // ── ONBOARDING ────────────────────────────────────────────────────────────────
 function rOb(){
   if(S.step===0)return`
-    <div style="min-height:100vh;background:linear-gradient(160deg,#5B0533 0%,#38001c 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 28px;text-align:center;">
+    <div style="min-height:100vh;min-height:100dvh;background:linear-gradient(160deg,#5B0533 0%,#38001c 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:calc(40px + env(safe-area-inset-top)) 28px calc(40px + env(safe-area-inset-bottom));text-align:center;">
       <div style="margin-bottom:52px;display:flex;flex-direction:column;align-items:center;">
         ${logoSVG('#F6E9CF',52)}
         <div style="width:28px;height:1.5px;background:#fec1d5;margin:20px auto 22px;"></div>
@@ -445,7 +454,7 @@ function rOb(){
   const prog=`<div style="display:flex;gap:5px;margin-bottom:32px;">${[1,2,3,4].map((_,i)=>`<div style="flex:1;height:2.5px;border-radius:99px;background:${i<S.step?'#5B0533':'#eee1c8'};"></div>`).join('')}</div>`;
 
   if(S.step===1)return`
-    <div style="min-height:100vh;background:#fff8f1;padding:48px 26px 28px;display:flex;flex-direction:column;">
+    <div style="min-height:100vh;min-height:100dvh;background:#fff8f1;padding:calc(48px + env(safe-area-inset-top)) 26px 28px;display:flex;flex-direction:column;">
       <div style="margin-bottom:24px;">${logoSVG('#5B0533',28)}</div>
       ${prog}
       <div style="flex:1;">
@@ -459,7 +468,7 @@ function rOb(){
     </div>`;
 
   if(S.step===2)return`
-    <div style="min-height:100vh;background:#fff8f1;padding:48px 26px 28px;display:flex;flex-direction:column;">
+    <div style="min-height:100dvh;background:#fff8f1;padding:calc(48px + env(safe-area-inset-top)) 26px 28px;display:flex;flex-direction:column;">
       <div style="margin-bottom:24px;">${logoSVG('#5B0533',28)}</div>
       ${prog}
       <div style="flex:1;">
@@ -473,7 +482,7 @@ function rOb(){
     </div>`;
 
   if(S.step===3)return`
-    <div style="min-height:100vh;background:#fff8f1;padding:48px 26px 28px;display:flex;flex-direction:column;">
+    <div style="min-height:100dvh;background:#fff8f1;padding:calc(48px + env(safe-area-inset-top)) 26px 28px;display:flex;flex-direction:column;">
       <div style="margin-bottom:20px;">${logoSVG('#5B0533',28)}</div>
       ${prog}
       <div style="flex:1;overflow-y:auto;">
@@ -486,7 +495,7 @@ function rOb(){
     </div>`;
 
   if(S.step===4)return`
-    <div style="min-height:100vh;background:#fff8f1;padding:48px 26px 28px;display:flex;flex-direction:column;">
+    <div style="min-height:100dvh;background:#fff8f1;padding:calc(48px + env(safe-area-inset-top)) 26px 28px;display:flex;flex-direction:column;">
       <div style="margin-bottom:20px;">${logoSVG('#5B0533',28)}</div>
       ${prog}
       <div style="flex:1;">
@@ -534,7 +543,7 @@ function rHome(){
   const act=S.goals.filter(g=>g.progress<100).slice(0,3);
   const prev=S.visionCards.slice(0,3);
   return`
-    <header style="padding:48px 22px 16px;background:linear-gradient(180deg,#fff2da 0%,#fff8f1 100%);">
+    <header style="padding:calc(48px + env(safe-area-inset-top)) 22px 16px;background:linear-gradient(180deg,#fff2da 0%,#fff8f1 100%);">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
         ${logoSVG('#5B0533',26)}
         <p class="lxs">${g}</p>
@@ -602,7 +611,7 @@ function rVision(){
     </div>`;
   }
   return`
-    <header style="padding:48px 22px 14px;background:linear-gradient(180deg,rgba(91,5,51,.07),transparent);">
+    <header style="padding:calc(48px + env(safe-area-inset-top)) 22px 14px;background:linear-gradient(180deg,rgba(91,5,51,.07),transparent);">
       <div style="margin-bottom:14px;">${logoSVG('#5B0533',26)}</div>
       <h1 class="serif" style="font-size:24px;font-weight:400;color:#38001c;">Tableau de Vision</h1>
       <p style="font-size:13px;color:#867278;margin-top:3px;">Transformez vos rêves en étapes concrètes.</p>
@@ -627,7 +636,7 @@ function rVision(){
 function rGoals(){
   const fh=S.filterH;const list=fh==='all'?S.goals:S.goals.filter(g=>g.horizon===fh);
   return`
-    <header style="padding:48px 22px 14px;">
+    <header style="padding:calc(48px + env(safe-area-inset-top)) 22px 14px;">
       <div style="margin-bottom:14px;">${logoSVG('#5B0533',26)}</div>
       <h1 class="serif" style="font-size:24px;font-weight:400;color:#38001c;">Gestion des objectifs</h1>
       <p style="font-size:13px;color:#867278;margin-top:3px;">Transformez vos rêves en étapes concrètes.</p>
@@ -643,7 +652,7 @@ function rGoals(){
 function rJournal(){
   const grp={};S.journal.forEach(e=>{const d=new Date(e.date).toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});if(!grp[d])grp[d]=[];grp[d].push(e);});
   return`
-    <header style="padding:48px 22px 14px;background:linear-gradient(180deg,#fff2da,transparent);">
+    <header style="padding:calc(48px + env(safe-area-inset-top)) 22px 14px;background:linear-gradient(180deg,#fff2da,transparent);">
       <div style="margin-bottom:14px;">${logoSVG('#5B0533',26)}</div>
       <h1 class="serif" style="font-size:24px;font-weight:400;color:#38001c;">Journal</h1>
       <p style="font-size:13px;color:#867278;margin-top:3px;">Ancrez vos moments importants.</p>
