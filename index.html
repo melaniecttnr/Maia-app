@@ -4,6 +4,18 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 <title>Maïa</title>
+
+<!-- PWA -->
+<meta name="theme-color" content="#5B0533"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="Maïa"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<link rel="manifest" id="pwa-manifest"/>
+
+<!-- Apple touch icon généré inline -->
+<link rel="apple-touch-icon" id="apple-icon"/>
+
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
@@ -141,6 +153,8 @@ const I={
   add:`<svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>`,
   check:`<svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>`,
   spark:`<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>`,
+  imgup:`<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5-7l-3 3.72L9 13l-3 4h12l-4-4z"/><path d="M13 9c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2z"/></svg>`,
+  pint:`<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>`,
   edit:`<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm17.71-10.21a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>`,
   trash:`<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>`,
   close:`<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>`,
@@ -196,18 +210,177 @@ let S=loadState()||{user:null,visionCards:[],goals:[],journal:[],motivation:null
 function set(p){S={...S,...p};saveState(S);draw();}
 function setL(k,v){S.loading={...S.loading,[k]:v};draw();}
 
-// ─── AI ───────────────────────────────────────────────────────────────────────
-// ⚠️  Remplacez YOUR_API_KEY_HERE par votre clé API Anthropic
-// Obtenez-en une sur https://console.anthropic.com
+// ─── 🔑 CLÉ API ANTHROPIC ────────────────────────────────────────────────────
+// 1. Rendez-vous sur https://console.anthropic.com
+// 2. Créez un compte ou connectez-vous
+// 3. Allez dans "API Keys" → "Create Key"
+// 4. Copiez votre clé (commence par "sk-ant-...")
+// 5. Remplacez YOUR_API_KEY_HERE ci-dessous par votre clé
+// ─────────────────────────────────────────────────────────────────────────────
 const API_KEY='YOUR_API_KEY_HERE';
+
+// ─── PWA : MANIFEST + ICÔNE + SERVICE WORKER ─────────────────────────────────
+(function setupPWA(){
+  // Génère l'icône PWA — logo SVG Maïa officiel rendu sur fond bordeaux
+  function buildIcon(cb){
+    const canvas=document.createElement('canvas');
+    canvas.width=512;canvas.height=512;
+    const ctx=canvas.getContext('2d');
+    ctx.fillStyle='#5B0533';
+    if(ctx.roundRect){ctx.beginPath();ctx.roundRect(0,0,512,512,80);ctx.fill();}
+    else{ctx.fillRect(0,0,512,512);}
+    const svgMarkup=`<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="245 507 1013 378">${LOGO_PATHS.map(p=>`<path transform="translate(${p.tx},${p.ty})" d="${p.d}" fill="#F6E9CF"/>`).join('')}</svg>`;
+    const svgBlob=new Blob([svgMarkup],{type:'image/svg+xml'});
+    const svgUrl=URL.createObjectURL(svgBlob);
+    const img=new Image();
+    img.onload=()=>{
+      const pad=76;ctx.drawImage(img,pad,pad,512-pad*2,512-pad*2);
+      URL.revokeObjectURL(svgUrl);
+      cb(canvas.toDataURL('image/png'));
+    };
+    img.onerror=()=>{URL.revokeObjectURL(svgUrl);cb(canvas.toDataURL('image/png'));};
+    img.src=svgUrl;
+  }
+
+  function applyManifest(iconUrl){
+    const appleLink=document.getElementById('apple-icon');
+    if(appleLink) appleLink.href=iconUrl;
+    const manifest={name:'Maïa',short_name:'Maïa',description:'Construisez la vie que vous méritez, étape par étape.',start_url:'.',display:'standalone',orientation:'portrait',background_color:'#5B0533',theme_color:'#5B0533',lang:'fr',icons:[{src:iconUrl,sizes:'512x512',type:'image/png',purpose:'any maskable'},{src:iconUrl,sizes:'192x192',type:'image/png',purpose:'any maskable'}]};
+    const mblob=new Blob([JSON.stringify(manifest)],{type:'application/json'});
+    const manifestLink=document.getElementById('pwa-manifest');
+    if(manifestLink) manifestLink.href=URL.createObjectURL(mblob);
+  }
+  buildIcon(applyManifest);
+
+  // Service Worker inline (cache assets pour mode hors-ligne)
+  if('serviceWorker' in navigator){
+    const swCode=`
+const CACHE='maia-v1';
+const ASSETS=[
+  'https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap',
+  'https://fonts.gstatic.com'
+];
+self.addEventListener('install',e=>{
+  e.waitUntil(caches.open(CACHE).then(c=>c.addAll([])).then(()=>self.skipWaiting()));
+});
+self.addEventListener('activate',e=>{
+  e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>clients.claim()));
+});
+self.addEventListener('fetch',e=>{
+  if(e.request.url.includes('anthropic.com')) return;
+  e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(res=>{
+    if(res.ok&&(e.request.url.startsWith('https://fonts.')||e.request.url.includes(location.origin))){
+      const clone=res.clone();
+      caches.open(CACHE).then(c=>c.put(e.request,clone));
+    }
+    return res;
+  }).catch(()=>caches.match(e.request))));
+});
+    `;
+    const swBlob=new Blob([swCode],{type:'application/javascript'});
+    const swUrl=URL.createObjectURL(swBlob);
+    navigator.serviceWorker.register(swUrl).catch(()=>{});
+  }
+
+  // Bannière "Ajouter à l'écran d'accueil" sur iOS
+  const isIOS=/iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase());
+  const isStandalone=window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone;
+  if(isIOS&&!isStandalone&&!localStorage.getItem('maia_pwa_banner_dismissed')){
+    setTimeout(()=>{
+      const banner=document.createElement('div');
+      banner.style.cssText='position:fixed;bottom:0;left:0;right:0;z-index:999;background:#5B0533;color:#F6E9CF;padding:16px 20px 28px;font-family:Inter,sans-serif;font-size:13px;line-height:1.5;display:flex;gap:12px;align-items:flex-start;box-shadow:0 -4px 20px rgba(0,0,0,.3);';
+      banner.innerHTML=`
+        <div style="font-size:28px;flex-shrink:0;">📲</div>
+        <div style="flex:1;">
+          <p style="font-weight:600;margin-bottom:3px;font-size:14px;">Installer Maïa sur votre écran d'accueil</p>
+          <p style="opacity:.75;">Appuyez sur <strong>Partager</strong> <span style="font-size:16px;">⎙</span> puis <strong>Sur l'écran d'accueil</strong></p>
+        </div>
+        <button onclick="this.parentElement.remove();localStorage.setItem('maia_pwa_banner_dismissed','1')" style="background:rgba(255,255,255,.2);border:none;color:#F6E9CF;padding:6px 10px;border-radius:8px;cursor:pointer;font-size:13px;flex-shrink:0;">✕</button>
+      `;
+      document.body.appendChild(banner);
+    },2500);
+  }
+
+  // Bannière installation Android/Chrome
+  let deferredPrompt=null;
+  window.addEventListener('beforeinstallprompt',e=>{
+    e.preventDefault();
+    deferredPrompt=e;
+    if(!localStorage.getItem('maia_pwa_installed')){
+      setTimeout(()=>{
+        const banner=document.createElement('div');
+        banner.style.cssText='position:fixed;bottom:0;left:0;right:0;z-index:999;background:#5B0533;color:#F6E9CF;padding:16px 20px 20px;font-family:Inter,sans-serif;font-size:13px;display:flex;gap:12px;align-items:center;box-shadow:0 -4px 20px rgba(0,0,0,.3);';
+        banner.innerHTML=`
+          <div style="font-size:24px;">📲</div>
+          <div style="flex:1;"><p style="font-weight:600;font-size:14px;margin-bottom:2px;">Installer Maïa</p><p style="opacity:.75;">Accès rapide depuis votre écran d'accueil</p></div>
+          <button id="pwa-install-btn" style="background:#F6E9CF;color:#5B0533;border:none;padding:9px 16px;border-radius:20px;cursor:pointer;font-weight:600;font-size:13px;white-space:nowrap;">Installer</button>
+          <button onclick="this.parentElement.remove()" style="background:none;border:none;color:#F6E9CF;cursor:pointer;padding:4px;font-size:18px;opacity:.6;">✕</button>
+        `;
+        document.body.appendChild(banner);
+        document.getElementById('pwa-install-btn')?.addEventListener('click',async()=>{
+          if(deferredPrompt){
+            deferredPrompt.prompt();
+            const{outcome}=await deferredPrompt.userChoice;
+            if(outcome==='accepted') localStorage.setItem('maia_pwa_installed','1');
+            deferredPrompt=null;
+            banner.remove();
+          }
+        });
+      },2500);
+    }
+  });
+})();
+
+// ─── PHOTO UPLOAD ──────────────────────────────────────────────────────────────
+function handlePhotoFile(file){
+  if(!file||!file.type.startsWith('image/'))return;
+  const reader=new FileReader();
+  reader.onload=e=>{S.sd={...S.sd,image:e.target.result};draw();};
+  reader.readAsDataURL(file);
+}
+
+// ─── PINTEREST FETCH ──────────────────────────────────────────────────────────
+async function fetchPinterest(url){
+  if(!url.trim()){S.sd={...S.sd,pintErr:'Veuillez entrer un lien Pinterest.'};draw();return;}
+  setL('pint',true);
+  S.sd={...S.sd,pintErr:null,pintImg:null};draw();
+  try{
+    // Pinterest oEmbed API — public, no auth needed
+    const enc=encodeURIComponent(url.trim());
+    const apiUrl=`https://www.pinterest.com/oembed.json?url=${enc}`;
+    // Use a CORS proxy since Pinterest doesn't allow direct browser requests
+    const proxy=`https://api.allorigins.win/get?url=${encodeURIComponent(apiUrl)}`;
+    const r=await fetch(proxy);
+    const raw=await r.json();
+    const data=JSON.parse(raw.contents);
+    // Extract image from oEmbed html or thumbnail
+    let imgUrl=data.thumbnail_url||null;
+    if(!imgUrl&&data.html){
+      const m=data.html.match(/src="([^"]+)"/);
+      if(m) imgUrl=m[1];
+    }
+    if(imgUrl){
+      S.sd={...S.sd,pintImg:imgUrl,pintSrc:url.trim(),pintErr:null};
+    } else {
+      S.sd={...S.sd,pintErr:'Image non trouvée. Vérifiez le lien ou essayez une autre épingle.'};
+    }
+  }catch(err){
+    S.sd={...S.sd,pintErr:'Impossible de récupérer l\'image. Vérifiez le lien Pinterest.'};
+  }finally{setL('pint',false);}
+}
 
 async function ai(sys,usr,max=600){
   if(API_KEY==='YOUR_API_KEY_HERE'){
-    return '[Ajoutez votre clé API Anthropic dans le fichier maia.html pour activer l\'IA]';
+    return '⚠️ Ajoutez votre clé API Anthropic dans maia.html (cherchez YOUR_API_KEY_HERE)';
   }
   const r=await fetch('https://api.anthropic.com/v1/messages',{
     method:'POST',
-    headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    headers:{
+      'Content-Type':'application/json',
+      'x-api-key':API_KEY,
+      'anthropic-version':'2023-06-01',
+      'anthropic-dangerous-direct-browser-access':'true'
+    },
     body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:max,system:sys,messages:[{role:'user',content:usr}]})
   });
   const d=await r.json();
@@ -404,6 +577,30 @@ function rHome(){
 
 // ── VISION ────────────────────────────────────────────────────────────────────
 function rVision(){
+  // Build masonry-style grid
+  const cards=S.visionCards;
+  function cardHTML(c,i){
+    const th=THEMES.find(t=>t.k===c.theme)||THEMES[0];
+    const ln=S.goals.filter(g=>g.linked===c.id).length;
+    const isWide=i===0&&cards.length>1;
+    const bg=c.image?`url("${c.image}") center/cover`:(c.pintImg?`url("${c.pintImg}") center/cover`:th.bg);
+    const overlay=c.image||c.pintImg?'rgba(0,0,0,0.32)':'transparent';
+    const tc=c.image||c.pintImg?'#fff':th.tc;
+    return`<div class="vc" style="background:${bg};${isWide?'grid-column:1/3;min-height:160px;':'min-height:120px;'}position:relative;overflow:hidden;">
+      ${c.image||c.pintImg?`<div style="position:absolute;inset:0;background:${overlay};border-radius:16px;"></div>`:''}
+      <div style="position:relative;z-index:1;flex:1;">
+        ${c.text?`<p class="serif" style="font-size:${isWide?15:13}px;color:${tc};line-height:1.5;font-style:italic;">${c.text}</p>`:''}
+        ${c.pintSrc?`<div style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.18);padding:3px 8px;border-radius:99px;margin-top:6px;"><span style="color:#E60023;font-size:10px;">●</span><span style="font-size:10px;color:${tc};opacity:.85;">Pinterest</span></div>`:''}
+      </div>
+      <div style="position:relative;z-index:1;display:flex;justify-content:space-between;align-items:center;margin-top:10px;">
+        <span style="font-size:10px;color:${tc}99;text-transform:uppercase;letter-spacing:.06em;">${ln} objectif${ln!==1?'s':''}</span>
+        <div style="display:flex;gap:5px;">
+          <button data-a="sug" data-id="${c.id}" data-txt="${encodeURIComponent(c.text||'vision')}" style="display:flex;align-items:center;gap:3px;background:rgba(255,255,255,.18);border:none;border-radius:8px;padding:5px 9px;cursor:pointer;color:${tc};">${I.spark}<span style="font-size:11px;font-weight:500;font-family:'Inter';">IA</span></button>
+          <button data-a="rmCard" data-id="${c.id}" style="background:rgba(255,255,255,.15);border:none;border-radius:8px;padding:5px 7px;cursor:pointer;color:${tc};">${I.close}</button>
+        </div>
+      </div>
+    </div>`;
+  }
   return`
     <header style="padding:48px 22px 14px;background:linear-gradient(180deg,rgba(91,5,51,.07),transparent);">
       <div style="margin-bottom:14px;">${logoSVG('#5B0533',26)}</div>
@@ -411,9 +608,18 @@ function rVision(){
       <p style="font-size:13px;color:#867278;margin-top:3px;">Transformez vos rêves en étapes concrètes.</p>
     </header>
     <div style="padding:0 20px 16px;">
-      <button class="btn bp" data-a="addCard" style="margin-bottom:18px;">${I.add} Nouvelle carte</button>
-      ${S.visionCards.length===0?`<div style="text-align:center;padding:46px 20px;"><div style="opacity:.15;margin-bottom:14px;color:#5B0533;">${I.photo}</div><p class="serif" style="font-size:17px;color:#38001c;margin-bottom:6px;font-weight:400;">Votre tableau vous attend</p><p style="font-size:13px;color:#867278;">Ajoutez votre première intention de vie</p></div>`:
-      `<div style="display:grid;grid-template-columns:1fr 1fr;gap:11px;">${S.visionCards.map((c,i)=>{const th=THEMES.find(t=>t.k===c.theme)||THEMES[0];const ln=S.goals.filter(g=>g.linked===c.id).length;return`<div class="vc" style="background:${th.bg};${i===0&&S.visionCards.length>1?'grid-column:1/3;min-height:148px;':''}"><p class="serif" style="font-size:${i===0?15:13}px;color:${th.tc};line-height:1.5;font-style:italic;flex:1;">${c.text}</p><div style="display:flex;justify-content:space-between;align-items:center;margin-top:11px;"><span style="font-size:10px;color:${th.tc}88;text-transform:uppercase;letter-spacing:.06em;">${ln} objectif${ln!==1?'s':''}</span><div style="display:flex;gap:5px;"><button data-a="sug" data-id="${c.id}" data-txt="${encodeURIComponent(c.text)}" style="display:flex;align-items:center;gap:3px;background:${th.tc}20;border:none;border-radius:8px;padding:5px 9px;cursor:pointer;color:${th.tc};">${I.spark}<span style="font-size:11px;font-weight:500;font-family:'Inter';">IA</span></button><button data-a="rmCard" data-id="${c.id}" style="background:${th.tc}18;border:none;border-radius:8px;padding:5px 7px;cursor:pointer;color:${th.tc};">${I.close}</button></div></div></div>`;}).join('')}</div>`}
+      <div style="display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;">
+        <button class="btn bp" data-a="addCard">${I.add} Carte texte</button>
+        <button class="btn bs" data-a="addPhoto">${I.imgup} Photo</button>
+        <button class="btn bs" data-a="addPint" style="display:flex;align-items:center;gap:6px;"><span style="color:#E60023;">${I.pint}</span> Pinterest</button>
+      </div>
+      <input type="file" id="photoInput" accept="image/*" style="display:none;" />
+      ${cards.length===0?`<div style="text-align:center;padding:46px 20px;">
+        <div style="opacity:.15;margin-bottom:14px;color:#5B0533;">${I.photo}</div>
+        <p class="serif" style="font-size:17px;color:#38001c;margin-bottom:6px;font-weight:400;">Votre tableau vous attend</p>
+        <p style="font-size:13px;color:#867278;">Ajoutez des cartes, photos ou inspirations Pinterest</p>
+      </div>`:
+      `<div style="display:grid;grid-template-columns:1fr 1fr;gap:11px;">${cards.map((c,i)=>cardHTML(c,i)).join('')}</div>`}
     </div>`;
 }
 
@@ -451,7 +657,57 @@ function rJournal(){
 // ── SHEETS ────────────────────────────────────────────────────────────────────
 function rSheet(){
   const sd=S.sd;
-  if(S.sheet==='addCard')return`<div class="bd" data-a="cls"><div class="sh" onclick="event.stopPropagation()"><h3 class="serif" style="font-size:19px;color:#38001c;font-weight:400;margin-bottom:16px;">Nouvelle carte de vision</h3><label class="lxs" style="display:block;margin-bottom:7px;">Votre intention</label><textarea id="cTxt" class="is" rows="3" style="margin-bottom:14px;" placeholder="Ex : Vivre dans une maison lumineuse entourée de nature...">${sd.text||''}</textarea><label class="lxs" style="display:block;margin-bottom:8px;">Thème visuel</label><div style="display:flex;gap:8px;margin-bottom:18px;">${THEMES.map(t=>`<div data-a="thm" data-k="${t.k}" style="width:42px;height:42px;border-radius:10px;background:${t.bg};border:3px solid ${(sd.theme||'rose')===t.k?'#5B0533':'transparent'};cursor:pointer;transition:border .2s;"></div>`).join('')}</div><div style="display:flex;gap:8px;"><button class="btn bs" data-a="cls">Annuler</button><button class="btn bp" data-a="saveCard" ${!(sd.text||'').trim()?'disabled':''} style="flex:1;">${I.check} Ajouter</button></div></div></div>`;
+  if(S.sheet==='addCard')return`<div class="bd" data-a="cls"><div class="sh" onclick="event.stopPropagation()">
+    <h3 class="serif" style="font-size:19px;color:#38001c;font-weight:400;margin-bottom:16px;">Carte de vision</h3>
+    <label class="lxs" style="display:block;margin-bottom:7px;">Votre intention</label>
+    <textarea id="cTxt" class="is" rows="3" style="margin-bottom:14px;" placeholder="Ex : Vivre dans une maison lumineuse entourée de nature...">${sd.text||''}</textarea>
+    <label class="lxs" style="display:block;margin-bottom:8px;">Thème visuel</label>
+    <div style="display:flex;gap:8px;margin-bottom:18px;">${THEMES.map(t=>`<div data-a="thm" data-k="${t.k}" style="width:42px;height:42px;border-radius:10px;background:${t.bg};border:3px solid ${(sd.theme||'rose')===t.k?'#5B0533':'transparent'};cursor:pointer;transition:border .2s;"></div>`).join('')}</div>
+    <div style="display:flex;gap:8px;"><button class="btn bs" data-a="cls">Annuler</button><button class="btn bp" data-a="saveCard" ${!(sd.text||'').trim()?'disabled':''} style="flex:1;">${I.check} Ajouter</button></div>
+  </div></div>`;
+
+  if(S.sheet==='addPhoto')return`<div class="bd" data-a="cls"><div class="sh" onclick="event.stopPropagation()">
+    <h3 class="serif" style="font-size:19px;color:#38001c;font-weight:400;margin-bottom:6px;">Ajouter une photo</h3>
+    <p style="font-size:13px;color:#867278;margin-bottom:18px;">Sélectionnez une photo depuis votre appareil</p>
+    ${sd.image?`<div style="width:100%;height:180px;border-radius:14px;background:url('${sd.image}') center/cover;margin-bottom:16px;position:relative;">
+      <button data-a="clearImg" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,.5);border:none;border-radius:8px;padding:5px 7px;cursor:pointer;color:#fff;">${I.close}</button>
+    </div>`:
+    `<div data-a="pickPhoto" style="width:100%;height:160px;border:2px dashed rgba(91,5,51,.2);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;gap:10px;margin-bottom:16px;background:#fff8f1;" >
+      <span style="color:#5B0533;opacity:.4;">${I.imgup}</span>
+      <p style="font-size:13px;color:#867278;">Appuyez pour choisir une photo</p>
+    </div>`}
+    <label class="lxs" style="display:block;margin-bottom:6px;">Légende (optionnel)</label>
+    <input type="text" id="pCaption" class="is" value="${sd.caption||''}" placeholder="Une intention, un mot..." style="margin-bottom:16px;" />
+    <div style="display:flex;gap:8px;"><button class="btn bs" data-a="cls">Annuler</button><button class="btn bp" data-a="savePhoto" ${!sd.image?'disabled':''} style="flex:1;">${I.check} Ajouter</button></div>
+  </div></div>`;
+
+  if(S.sheet==='addPint')return`<div class="bd" data-a="cls"><div class="sh" onclick="event.stopPropagation()">
+    <div style="display:flex;gap:10px;align-items:center;margin-bottom:6px;">
+      <div style="padding:8px;background:#E60023;border-radius:10px;color:#fff;">${I.pint}</div>
+      <h3 class="serif" style="font-size:19px;color:#38001c;font-weight:400;">Inspiration Pinterest</h3>
+    </div>
+    <p style="font-size:13px;color:#867278;margin-bottom:16px;">Collez le lien d'une épingle Pinterest</p>
+    <label class="lxs" style="display:block;margin-bottom:6px;">URL de l'épingle</label>
+    <input type="url" id="pintUrl" class="is" value="${sd.pintUrl||''}" placeholder="https://www.pinterest.com/pin/..." style="margin-bottom:10px;" />
+    ${sd.pintErr?`<p style="font-size:12px;color:#ba1a1a;margin-bottom:10px;">⚠️ ${sd.pintErr}</p>`:''}
+    ${sd.pintImg?`<div style="width:100%;height:180px;border-radius:14px;background:url('${sd.pintImg}') center/cover;margin-bottom:16px;position:relative;">
+      <div style="position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,.5);padding:4px 8px;border-radius:8px;display:flex;align-items:center;gap:5px;">
+        <span style="color:#E60023;font-size:12px;">●</span><span style="font-size:11px;color:#fff;">Pinterest</span>
+      </div>
+    </div>`:''}
+    <label class="lxs" style="display:block;margin-bottom:6px;">Votre intention</label>
+    <input type="text" id="pintCaption" class="is" value="${sd.pintCaption||''}" placeholder="Ce que cette image représente pour vous..." style="margin-bottom:16px;" />
+    <div style="display:flex;gap:8px;">
+      <button class="btn bs" data-a="cls">Annuler</button>
+      <button class="btn bs" data-a="fetchPint" ${S.loading.pint?'disabled':''}>
+        ${S.loading.pint?`<div class="dots" style="color:#5B0533;"><span></span><span></span><span></span></div>`:'Aperçu'}
+      </button>
+      <button class="btn bp" data-a="savePint" ${!sd.pintImg?'disabled':''} style="flex:1;">${I.check} Ajouter</button>
+    </div>
+    <div style="margin-top:16px;padding:12px;background:#fff2da;border-radius:10px;">
+      <p style="font-size:11px;color:#544248;line-height:1.6;">💡 <strong>Comment trouver le lien d'une épingle :</strong> Sur Pinterest, appuyez sur une image → bouton Partager → Copier le lien</p>
+    </div>
+  </div></div>`;
 
   if(S.sheet==='addGoal'||S.sheet==='editGoal'){const ie=S.sheet==='editGoal';return`<div class="bd" data-a="cls"><div class="sh" onclick="event.stopPropagation()"><h3 class="serif" style="font-size:19px;color:#38001c;font-weight:400;margin-bottom:14px;">${ie?'Modifier l\'objectif':'Nouvel objectif'}</h3><label class="lxs" style="display:block;margin-bottom:5px;">Titre</label><div style="display:flex;gap:7px;margin-bottom:12px;"><input type="text" id="gT" class="is" value="${sd.title||''}" placeholder="Ex : Voyager dans un nouveau pays" style="flex:1;" /><button data-a="aiD" style="padding:11px 12px;background:linear-gradient(135deg,#5B0533,#7f5162);border-radius:12px;border:none;cursor:pointer;color:#fff;flex-shrink:0;">${S.loading.gd?`<div class="dots" style="color:#fff;"><span></span><span></span><span></span></div>`:I.spark}</button></div><label class="lxs" style="display:block;margin-bottom:5px;">Description</label><textarea id="gD" class="is" rows="2" style="margin-bottom:12px;" placeholder="L'intention derrière cet objectif...">${sd.desc||''}</textarea><label class="lxs" style="display:block;margin-bottom:6px;">Horizon</label><div style="display:flex;gap:7px;margin-bottom:12px;">${HORIZONS.map(h=>`<button data-a="gH" data-k="${h.k}" style="flex:1;padding:9px 5px;border-radius:10px;border:2px solid ${(sd.horizon||'moyen')===h.k?'#5B0533':'transparent'};background:${(sd.horizon||'moyen')===h.k?'rgba(91,5,51,.08)':'#f4e7cd'};color:${(sd.horizon||'moyen')===h.k?'#5B0533':'#544248'};font-family:'Inter';font-size:11px;cursor:pointer;font-weight:${(sd.horizon||'moyen')===h.k?600:400};">${h.l}</button>`).join('')}</div><label class="lxs" style="display:block;margin-bottom:6px;">Domaine</label><div class="dg" style="margin-bottom:12px;">${DOMAINS.map(d=>`<button data-a="gDom" data-k="${d.k}" style="display:flex;align-items:center;gap:6px;padding:9px 10px;border-radius:10px;border:2px solid ${(sd.domain||'perso')===d.k?'#5B0533':'transparent'};background:${(sd.domain||'perso')===d.k?'rgba(91,5,51,.08)':'#f4e7cd'};color:${(sd.domain||'perso')===d.k?'#5B0533':'#544248'};font-family:'Inter';font-size:11px;cursor:pointer;font-weight:${(sd.domain||'perso')===d.k?600:400};">${DI[d.k]||''}${d.l}</button>`).join('')}</div><label class="lxs" id="pLabel" style="display:block;margin-bottom:4px;">Progression — ${sd.progress||0}%</label><input type="range" id="gP" min="0" max="100" step="5" value="${sd.progress||0}" style="margin-bottom:14px;" /><div style="display:flex;gap:8px;"><button class="btn bs" data-a="cls">Annuler</button><button class="btn bp" data-a="saveGoal" ${!(sd.title||'').trim()?'disabled':''} style="flex:1;">${I.check} Enregistrer</button></div></div></div>`;}
 
@@ -464,11 +720,21 @@ function rSheet(){
 // ─── EVENTS ───────────────────────────────────────────────────────────────────
 function bind(){
   document.querySelectorAll('[data-a]').forEach(el=>el.addEventListener('click',handle,{once:true}));
+  // Photo file input
+  const pi=document.getElementById('photoInput');
+  if(pi){pi.onchange=e=>{if(e.target.files[0])handlePhotoFile(e.target.files[0]);pi.value='';};}
+  // Drag & drop on vision page
+  const scroll=document.querySelector('.scroll');
+  if(scroll&&S.page==='vision'){
+    scroll.ondragover=e=>{e.preventDefault();};
+    scroll.ondrop=e=>{e.preventDefault();const f=e.dataTransfer.files[0];if(f&&f.type.startsWith('image/')){S.sd={image:null,caption:''};set({sheet:'addPhoto'});setTimeout(()=>handlePhotoFile(f),50);}};
+  }
   const o1=document.getElementById('ob1');
   if(o1){o1.focus();o1.addEventListener('input',e=>{S.ob={...S.ob,prenom:e.target.value};const b=document.querySelector('[data-a="ob1"]');if(b)b.disabled=!e.target.value.trim();});}
   const o2=document.getElementById('ob2');
   if(o2){o2.focus();o2.addEventListener('input',e=>{S.ob={...S.ob,age:e.target.value};const b=document.querySelector('[data-a="ob2"]');if(b)b.disabled=!e.target.value;});}
   const ct=document.getElementById('cTxt');if(ct)ct.addEventListener('input',e=>{S.sd={...S.sd,text:e.target.value};const b=document.querySelector('[data-a="saveCard"]');if(b)b.disabled=!e.target.value.trim();});
+  const pu=document.getElementById('pintUrl');if(pu)pu.addEventListener('input',e=>{S.sd={...S.sd,pintUrl:e.target.value};});
   const gt=document.getElementById('gT');if(gt)gt.addEventListener('input',e=>{S.sd={...S.sd,title:e.target.value};const b=document.querySelector('[data-a="saveGoal"]');if(b)b.disabled=!e.target.value.trim();});
   const gd=document.getElementById('gD');if(gd)gd.addEventListener('input',e=>{S.sd={...S.sd,desc:e.target.value};});
   const gp=document.getElementById('gP');if(gp)gp.addEventListener('input',e=>{S.sd={...S.sd,progress:parseInt(e.target.value)};const l=document.getElementById('pLabel');if(l)l.textContent=`Progression — ${e.target.value}%`;});
@@ -494,6 +760,23 @@ function handle(e){
   else if(a==='nav')set({page:el.dataset.p,sheet:null});
   else if(a==='motiv')getMotiv();
   else if(a==='addCard')set({sheet:'addCard',sd:{theme:'rose',text:''}});
+  else if(a==='addPhoto')set({sheet:'addPhoto',sd:{image:null,caption:''}});
+  else if(a==='addPint')set({sheet:'addPint',sd:{pintUrl:'',pintCaption:'',pintImg:null,pintErr:null,pintSrc:''}});
+  else if(a==='pickPhoto'){document.getElementById('photoInput')?.click();}
+  else if(a==='clearImg'){S.sd={...S.sd,image:null};draw();}
+  else if(a==='savePhoto'){
+    const caption=document.getElementById('pCaption')?.value||S.sd.caption||'';
+    if(S.sd.image) set({visionCards:[...S.visionCards,{id:Date.now(),text:caption,image:S.sd.image,theme:'rose'}],sheet:null,sd:{}});
+  }
+  else if(a==='fetchPint'){
+    const url=document.getElementById('pintUrl')?.value||S.sd.pintUrl||'';
+    S.sd={...S.sd,pintUrl:url};
+    fetchPinterest(url);
+  }
+  else if(a==='savePint'){
+    const caption=document.getElementById('pintCaption')?.value||S.sd.pintCaption||'';
+    if(S.sd.pintImg) set({visionCards:[...S.visionCards,{id:Date.now(),text:caption,pintImg:S.sd.pintImg,pintSrc:S.sd.pintSrc,theme:'bordeaux'}],sheet:null,sd:{}});
+  }
   else if(a==='cls')set({sheet:null,sd:{}});
   else if(a==='thm'){S.sd={...S.sd,theme:el.dataset.k};draw();}
   else if(a==='saveCard'){const t=document.getElementById('cTxt')?.value||S.sd.text||'';if(t.trim())set({visionCards:[...S.visionCards,{id:Date.now(),text:t.trim(),theme:S.sd.theme||'rose'}],sheet:null,sd:{}});}
